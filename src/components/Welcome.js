@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Container that holds both the background image and the content.
+// Wrapper that holds the background image, overlay, and content.
 const Wrapper = styled.div`
   position: relative;
   height: 100vh;
   overflow: hidden;
 `;
 
-// Background image with slight blur effect.
+// Background image with slight blur.
 const BackgroundImage = styled.div`
   position: absolute;
   top: 0;
@@ -20,18 +20,18 @@ const BackgroundImage = styled.div`
   z-index: 1;
 `;
 
-// A semi-transparent overlay to enhance text readability.
+// Semi-transparent overlay to improve text readability.
 const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(30, 60, 114, 0.5); /* Slight blue overlay */
+  background: rgba(30, 60, 114, 0.5);
   z-index: 2;
 `;
 
-// Main container for the welcome content.
+// Main container for welcome content.
 const WelcomeContainer = styled.div`
   position: relative;
   z-index: 3;
@@ -52,7 +52,7 @@ const Title = styled.h1`
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-// Styled subtitle.
+// Styled subtitle text.
 const Subtitle = styled.p`
   font-size: 1.5rem;
   margin-bottom: 2rem;
@@ -76,6 +76,18 @@ const StartButton = styled.button`
   }
 `;
 
+// Footer container for project information.
+const Footer = styled.div`
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: white;
+  line-height: 1.5;
+  z-index: 3;
+`;
+
 const Welcome = ({ onStart }) => {
   return (
     <Wrapper>
@@ -86,6 +98,12 @@ const Welcome = ({ onStart }) => {
         <Subtitle>Experience our campus in 360°</Subtitle>
         <StartButton onClick={onStart}>Start Tour</StartButton>
       </WelcomeContainer>
+      <Footer>
+        <div><strong>ICAT Project</strong></div>
+        <div>BS AI</div>
+        <div><strong>Members:</strong> Saqlain, Aleena, Sadia, Malaika, Aena</div>
+        <div><strong>Supervisor:</strong> Tahreem Khalil</div>
+      </Footer>
     </Wrapper>
   );
 };

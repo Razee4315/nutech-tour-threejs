@@ -2,6 +2,7 @@
   "name": "nutech-tour",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Razee4315.github.io/nutech-tour",
   "dependencies": {
     "cra-template": "1.2.0",
     "pannellum-react": "^1.2.4",
@@ -15,7 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   }
 }
