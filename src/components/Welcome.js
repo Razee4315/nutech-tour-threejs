@@ -25,7 +25,7 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('/background.jpg') center center/cover no-repeat;
+  background: url('${process.env.PUBLIC_URL}/background.jpg') center center/cover no-repeat;
   filter: blur(3px);
   transform: scale(1.05);
   z-index: 1;
