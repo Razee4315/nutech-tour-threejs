@@ -161,7 +161,7 @@ const locations = [
   {
     id: 1,
     title: 'First Location',
-    image: '/images/1.jpg',
+    image: 'https://razee4315.github.io/nutech-tour/images/1.jpg',
     info: 'Welcome to the first 360° experience.',
     hotSpots: [
       {
@@ -187,7 +187,7 @@ const locations = [
   {
     id: 2,
     title: 'Second Location',
-    image: '/images/2.jpg',
+    image: 'https://razee4315.github.io/nutech-tour/images/2.jpg',
     info: 'Discover the second immersive environment.',
     hotSpots: [
       {
