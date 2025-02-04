@@ -22,7 +22,7 @@ Before you begin, ensure you have met the following requirements:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/nutech-tour.git
+git clone https://github.com/Razee4315/nutech-tour.git
 cd nutech-tour
 ```
 
