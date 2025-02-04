@@ -159,9 +159,9 @@ const InfoModal = ({ show, onClose, title, message }) => (
 --------------------------------------------------------------------------- */
 const locations = [
   {
-    id: 0,
+    id: 1,
     title: 'First Location',
-    image: `${process.env.PUBLIC_URL}/images/first-location.jpg`,
+    image: '/images/1.jpg',
     info: 'Welcome to the first 360° experience.',
     hotSpots: [
       {
@@ -185,9 +185,9 @@ const locations = [
     ]
   },
   {
-    id: 1,
+    id: 2,
     title: 'Second Location',
-    image: `${process.env.PUBLIC_URL}/images/second-location.jpg`,
+    image: '/images/2.jpg',
     info: 'Discover the second immersive environment.',
     hotSpots: [
       {
