@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Wrapper that holds the background image, overlay, and content.
+// Outer container with relative positioning
 const Wrapper = styled.div`
   position: relative;
   height: 100vh;
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 `;
 
-// Background image with slight blur.
+// Background image with a light blur effect
 const BackgroundImage = styled.div`
   position: absolute;
   top: 0;
@@ -16,76 +17,92 @@ const BackgroundImage = styled.div`
   width: 100%;
   height: 100%;
   background: url('/background.jpg') center center/cover no-repeat;
-  filter: blur(4px);
+  filter: blur(3px);
+  transform: scale(1.05); /* Slight scale to hide blur edges */
   z-index: 1;
 `;
 
-// Semi-transparent overlay to improve text readability.
+// A semi-transparent overlay with a subtle dark gradient for improved contrast
 const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(30, 60, 114, 0.5);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 100%);
   z-index: 2;
 `;
 
-// Main container for welcome content.
-const WelcomeContainer = styled.div`
+// Main content container centered on screen
+const Content = styled.div`
   position: relative;
   z-index: 3;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
   text-align: center;
-  padding: 0 20px;
+  color: #fdfdfd;
 `;
 
-// Styled header text.
+// Professional title styling
 const Title = styled.h1`
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 `;
 
-// Styled subtitle text.
+// Clean subtitle styling
 const Subtitle = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 300;
   margin-bottom: 2rem;
-  opacity: 0.9;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
 `;
 
-// Styled start button.
+// Glass-effect style button with modern hover animation
 const StartButton = styled.button`
-  padding: 1rem 2rem;
+  padding: 1rem 2.5rem;
   font-size: 1.2rem;
-  background-color: #ffffff;
-  color: #1e3c72;
-  border: none;
-  border-radius: 30px;
+  font-weight: 600;
+  color: #fdfdfd;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px) scale(1.03);
+    background: rgba(255, 255, 255, 0.25);
   }
 `;
 
-// Footer container for project information.
-const Footer = styled.div`
+// Footer container with project information
+const Footer = styled.footer`
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
-  color: white;
-  line-height: 1.5;
   z-index: 3;
+  text-align: center;
+  color: #fdfdfd;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  padding: 0 20px;
+`;
+
+// Bold labels within the footer for emphasis
+const Bold = styled.span`
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 `;
 
 const Welcome = ({ onStart }) => {
@@ -93,16 +110,22 @@ const Welcome = ({ onStart }) => {
     <Wrapper>
       <BackgroundImage />
       <Overlay />
-      <WelcomeContainer>
+      <Content>
         <Title>Welcome to NUTECH Tour</Title>
         <Subtitle>Experience our campus in 360°</Subtitle>
         <StartButton onClick={onStart}>Start Tour</StartButton>
-      </WelcomeContainer>
+      </Content>
       <Footer>
-        <div><strong>ICAT Project</strong></div>
+        <div>
+          <Bold>ICAT Project</Bold>
+        </div>
         <div>BS AI</div>
-        <div><strong>Members:</strong> Saqlain, Aleena, Sadia, Malaika, Aena</div>
-        <div><strong>Supervisor:</strong> Tahreem Khalil</div>
+        <div>
+          <Bold>Members:</Bold> Saqlain, Aleena, Sadia, Malaika, Aena
+        </div>
+        <div>
+          <Bold>Supervisor:</Bold> Tahreem Khalil
+        </div>
       </Footer>
     </Wrapper>
   );

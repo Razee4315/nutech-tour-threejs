@@ -26,28 +26,39 @@ const LocationInfo = styled.div`
   padding: 16px 24px;
   border-radius: 8px;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   max-width: 300px;
 `;
 
-// Fullscreen toggle button at top right
-const FullscreenButton = styled.button`
+// Glassmorphism style for buttons
+const GlassButton = styled.button`
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fdfdfd;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: rgba(255, 255, 255, 0.25);
+  }
+`;
+
+// Fullscreen toggle button at top right (ensuring it stays visible)
+const FullscreenButton = styled(GlassButton)`
   position: absolute;
   top: 20px;
   right: 20px;
   padding: 10px 16px;
-  background-color: rgba(20, 20, 20, 0.85);
-  color: #fff;
-  border: none;
+  font-size: 0.9rem;
   border-radius: 20px;
-  cursor: pointer;
-  z-index: 1000;
-  transition: background-color 0.2s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-
-  &:hover {
-    background-color: rgba(20, 20, 20, 1);
-  }
+  z-index: 1100;
 `;
 
 // Loading overlay with a spinner
@@ -84,22 +95,10 @@ const NavButtonContainer = styled.div`
   gap: 20px;
 `;
 
-// Navigation button styles
-const NavigationButton = styled.button`
+// Navigation buttons using the glass style
+const NavigationButton = styled(GlassButton)`
   padding: 12px 24px;
-  background-color: #fff;
-  color: #333;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
   font-size: 1rem;
-  transition: transform 0.2s, background-color 0.2s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-
-  &:hover {
-    transform: scale(1.05);
-    background-color: #f0f0f0;
-  }
 `;
 
 // Modal overlay for displaying hotspot information
@@ -124,22 +123,20 @@ const ModalContent = styled.div`
   border-radius: 8px;
   max-width: 400px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 `;
 
-// Button to close the modal
-const ModalCloseButton = styled.button`
-  margin-top: 20px;
+// Modal close button using glass style for consistency
+const ModalCloseButton = styled(GlassButton)`
   padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  background: rgba(20, 20, 20, 0.15);
+  border: 1px solid rgba(20, 20, 20, 0.3);
+  color: #fdfdfd;
 
   &:hover {
-    background-color: #555;
+    background: rgba(20, 20, 20, 0.25);
   }
 `;
 
@@ -156,23 +153,9 @@ const InfoModal = ({ show, onClose, title, message }) => (
 
 /* ---------------------------------------------------------------------------
    Tour location data and hotspot configuration:
-   
-   Each location object contains:
-     - id: Unique identifier
-     - title: Location title
-     - image: URL to the 360° image
-     - info: Short description of the location
-     - hotSpots: Array of hotspot objects
-
-   Each hotspot object should contain:
-     - pitch: The vertical angle (for positioning within the panorama)
-     - yaw: The horizontal angle (for positioning within the panorama)
-     - type: 'custom' for navigation or 'info' for displaying info
-     - text: Label displayed for the hotspot
-     - handleClick: A function that handles the hotspot click event.  
-       If set to null, a default modal displaying info will appear.
-       
-   *To add or modify a hotspot, edit the corresponding object in the hotSpots array.*
+   Each location object now contains exactly two hotspots:
+     - One hotspot for navigation (next image)
+     - One hotspot for displaying info
 --------------------------------------------------------------------------- */
 const locations = [
   {
@@ -182,22 +165,22 @@ const locations = [
     info: 'Welcome to the first 360° experience.',
     hotSpots: [
       {
-        // Hotspot for navigating to the second location
+        // Navigation hotspot: go to second location
         pitch: -10,
         yaw: 0,
         type: 'custom',
-        text: 'Go to Second Image',
+        text: 'Go to Next Image',
         handleClick: (setCurrentLocation) => {
           setCurrentLocation(1);
         }
       },
       {
-        // Hotspot for displaying additional information
+        // Info hotspot: display modal information
         pitch: 15,
         yaw: 90,
         type: 'info',
-        text: 'THis is more info about the info in the first image',
-        handleClick: null // This will trigger the modal popup
+        text: 'More Info',
+        handleClick: null // Triggers default modal
       }
     ]
   },
@@ -208,14 +191,22 @@ const locations = [
     info: 'Discover the second immersive environment.',
     hotSpots: [
       {
-        // Hotspot for returning to the first location
-        pitch: 0,
-        yaw: 180,
+        // Navigation hotspot: loop back to first location
+        pitch: -10,
+        yaw: 0,
         type: 'custom',
-        text: 'Return to First Image',
+        text: 'Go to Next Image',
         handleClick: (setCurrentLocation) => {
           setCurrentLocation(0);
         }
+      },
+      {
+        // Info hotspot: display modal information
+        pitch: 15,
+        yaw: 90,
+        type: 'info',
+        text: 'More Info',
+        handleClick: null // Triggers default modal
       }
     ]
   }
@@ -227,10 +218,10 @@ const TourView = () => {
   const [modalInfo, setModalInfo] = useState({ show: false, title: '', message: '' });
   const panImageRef = useRef(null);
 
-  // Destructure the current location data for ease of access
+  // Get current location data
   const currentData = locations[currentLocation];
 
-  // Navigation handlers for switching locations
+  // Navigation handlers (optional if using external navigation buttons)
   const goToPreviousLocation = () =>
     setCurrentLocation((prev) => (prev - 1 + locations.length) % locations.length);
 
@@ -251,7 +242,7 @@ const TourView = () => {
     setIsLoading(false);
   };
 
-  // Default handler for hotspots that do not have a custom action: display modal
+  // Default handler for hotspots without a custom action: display modal
   const handleHotspotInfo = (hotspot) => {
     setModalInfo({
       show: true,
@@ -287,10 +278,10 @@ const TourView = () => {
         width="100%"
         height="100vh"
         image={currentData.image}
-        pitch={10} // Initial pitch (vertical view) for the panorama
-        yaw={180}  // Initial yaw (horizontal view) for the panorama
+        pitch={10} // Initial pitch
+        yaw={180}  // Initial yaw
         hfov={110}
-        autoRotate={2}  // Fixed auto-rotate speed
+        autoRotate={2}  // Auto-rotate speed
         ref={panImageRef}
         autoLoad
         onLoad={handlePanoramaLoad}
@@ -303,7 +294,6 @@ const TourView = () => {
             yaw={hotspot.yaw}
             text={hotspot.text}
             handleClick={() => {
-              // If a custom hotspot action is provided, execute it; otherwise, show modal
               if (hotspot.handleClick) {
                 hotspot.handleClick(setCurrentLocation);
               } else {
@@ -314,7 +304,7 @@ const TourView = () => {
         ))}
       </Pannellum>
 
-      {/* Navigation buttons container */}
+      {/* Optional external navigation buttons */}
       {locations.length > 1 && (
         <NavButtonContainer>
           <NavigationButton onClick={goToPreviousLocation}>
