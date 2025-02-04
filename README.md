@@ -1,0 +1,101 @@
+# NuTech 360° Virtual Tour
+
+## Project Overview
+
+This is a React-based 360° Virtual Tour application that allows users to explore different locations through interactive panoramic images with customizable hotspots.
+
+## Features
+
+- 360° Panoramic Image Viewing
+- Interactive Hotspots
+- Multiple Location Navigation
+- Responsive Design
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js (v14.0.0 or later)
+- npm (v6.0.0 or later)
+
+## Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/nutech-tour.git
+cd nutech-tour
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+## Running the Project
+
+To run the project locally:
+
+```bash
+npm start
+```
+
+The application will open in your default browser at `http://localhost:3000`
+
+## Understanding Hotspots
+
+### What are Hotspots?
+
+Hotspots are interactive points on a 360° panoramic image that users can click to:
+- Navigate between scenes
+- Display information
+- Trigger custom actions
+
+### Hotspot Types in This Project
+
+1. **Custom Hotspots**
+   - Allow custom interactions
+   - Can navigate between images
+   - Defined with `type: "custom"`
+
+2. **Info Hotspots**
+   - Display informational alerts
+   - Defined with `type: "info"`
+
+### Hotspot Configuration Example
+
+```javascript
+{
+  pitch: -10,  // Vertical position
+  yaw: 0,      // Horizontal position
+  type: "custom",
+  text: "Go to Second Image",
+  handleClick: (setCurrentLocation) => {
+    setCurrentLocation(1);  // Change to the second location
+  }
+}
+```
+
+## Project Structure
+
+- `src/components/TourView.js`: Main component for 360° tour
+- `public/images/`: Store your 360° panoramic images here
+- `src/styles/`: Additional styling (if needed)
+
+
+## Troubleshooting
+
+- Ensure all images are in the correct format (jpg/png)
+- Check browser console for any errors
+- Verify Node.js and npm versions
+
+## Technologies Used
+
+- React
+- Pannellum React
+- Styled Components
+
+## Contact
+
+Your Name - saqlainrazee@gmail.com
+
+Project Link: [https://github.com/yourusername/nutech-tour](https://github.com/Razee4315/nutech-tour)
