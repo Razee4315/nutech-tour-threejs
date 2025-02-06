@@ -153,60 +153,190 @@ const InfoModal = ({ show, onClose, title, message }) => (
 
 /* ---------------------------------------------------------------------------
    Tour location data and hotspot configuration:
-   Each location object now contains exactly two hotspots:
-     - One hotspot for navigation (next image)
-     - One hotspot for displaying info
+   The tour now includes 7 locations. Each location has:
+     - A navigation hotspot (to go to the next image; the last location loops back to the first)
+     - An info hotspot (to display additional information)
 --------------------------------------------------------------------------- */
 const locations = [
   {
     id: 1,
-    title: 'First Location',
+    title: 'Location 1',
     image: `${process.env.PUBLIC_URL}/images/1.jpg`,
-    info: 'Welcome to the first 360° experience.',
+    info: 'Explore the vibrant atmosphere of Location 1.',
     hotSpots: [
       {
-        // Navigation hotspot: go to second location
+        // Navigation hotspot: go to Location 2
         pitch: -10,
         yaw: 0,
         type: 'custom',
-        text: 'Go to Next Image',
+        text: 'Go to Location 2',
         handleClick: (setCurrentLocation) => {
           setCurrentLocation(1);
         }
       },
       {
-        // Info hotspot: display modal information
+        // Info hotspot
         pitch: 15,
         yaw: 90,
         type: 'info',
-        text: 'More Info',
-        handleClick: null // Triggers default modal
+        text: 'Learn More',
+        handleClick: null
       }
     ]
   },
   {
     id: 2,
-    title: 'Second Location',
+    title: 'Location 2',
     image: `${process.env.PUBLIC_URL}/images/2.jpg`,
-    info: 'Discover the second immersive environment.',
+    info: 'Step into the serene views of Location 2.',
     hotSpots: [
       {
-        // Navigation hotspot: loop back to first location
+        // Navigation hotspot: go to Location 3
         pitch: -10,
         yaw: 0,
         type: 'custom',
-        text: 'Go to Next Image',
+        text: 'Go to Location 3',
+        handleClick: (setCurrentLocation) => {
+          setCurrentLocation(2);
+        }
+      },
+      {
+        // Info hotspot
+        pitch: 10,
+        yaw: 80,
+        type: 'info',
+        text: 'More Details',
+        handleClick: null
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: 'Location 3',
+    image: `${process.env.PUBLIC_URL}/images/3.jpg`,
+    info: 'Discover the historical charm of Location 3.',
+    hotSpots: [
+      {
+        // Navigation hotspot: go to Location 4
+        pitch: -12,
+        yaw: 5,
+        type: 'custom',
+        text: 'Go to Location 4',
+        handleClick: (setCurrentLocation) => {
+          setCurrentLocation(3);
+        }
+      },
+      {
+        // Info hotspot
+        pitch: 18,
+        yaw: 70,
+        type: 'info',
+        text: 'View Info',
+        handleClick: null
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: 'Location 4',
+    image: `${process.env.PUBLIC_URL}/images/4.jpg`,
+    info: 'Immerse yourself in the beauty of Location 4.',
+    hotSpots: [
+      {
+        // Navigation hotspot: go to Location 5
+        pitch: -8,
+        yaw: 15,
+        type: 'custom',
+        text: 'Go to Location 5',
+        handleClick: (setCurrentLocation) => {
+          setCurrentLocation(4);
+        }
+      },
+      {
+        // Info hotspot
+        pitch: 12,
+        yaw: 95,
+        type: 'info',
+        text: 'Discover More',
+        handleClick: null
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: 'Location 5',
+    image: `${process.env.PUBLIC_URL}/images/5.jpg`,
+    info: 'Witness breathtaking scenes at Location 5.',
+    hotSpots: [
+      {
+        // Navigation hotspot: go to Location 6
+        pitch: -10,
+        yaw: 0,
+        type: 'custom',
+        text: 'Go to Location 6',
+        handleClick: (setCurrentLocation) => {
+          setCurrentLocation(5);
+        }
+      },
+      {
+        // Info hotspot
+        pitch: 14,
+        yaw: 85,
+        type: 'info',
+        text: 'More Info',
+        handleClick: null
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: 'Location 6',
+    image: `${process.env.PUBLIC_URL}/images/6.jpg`,
+    info: 'Experience the dynamic energy of Location 6.',
+    hotSpots: [
+      {
+        // Navigation hotspot: go to Location 7
+        pitch: -10,
+        yaw: 0,
+        type: 'custom',
+        text: 'Go to Location 7',
+        handleClick: (setCurrentLocation) => {
+          setCurrentLocation(6);
+        }
+      },
+      {
+        // Info hotspot
+        pitch: 16,
+        yaw: 100,
+        type: 'info',
+        text: 'Learn More',
+        handleClick: null
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: 'Location 7',
+    image: `${process.env.PUBLIC_URL}/images/7.jpg`,
+    info: 'Conclude your tour with the stunning Location 7.',
+    hotSpots: [
+      {
+        // Navigation hotspot: loop back to Location 1
+        pitch: -10,
+        yaw: 0,
+        type: 'custom',
+        text: 'Back to Location 1',
         handleClick: (setCurrentLocation) => {
           setCurrentLocation(0);
         }
       },
       {
-        // Info hotspot: display modal information
-        pitch: 15,
-        yaw: 90,
+        // Info hotspot
+        pitch: 20,
+        yaw: 110,
         type: 'info',
-        text: 'More Info',
-        handleClick: null // Triggers default modal
+        text: 'Final Info',
+        handleClick: null
       }
     ]
   }

@@ -118,9 +118,12 @@ const InfoTitle = styled.span`
 
 // Each line in the info card
 const InfoLine = styled.div`
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
+ 
+
+
+
+
+
 `;
 
 // The Welcome component
