@@ -289,159 +289,270 @@ const InfoModal = ({ show, onClose, title, message }) => (
 const locations = [
   {
     id: 1,
-    title: 'Location 1',
-    image: `${process.env.PUBLIC_URL}/images/1.jpg`,
-    info: 'Explore the vibrant atmosphere of Location 1.',
+    title: 'Uni_Ground',
+    image: `${process.env.PUBLIC_URL}/images/Uni_Ground.jpg`,
+    info: 'Explore the vibrant atmosphere of Uni_Ground.',
     hotSpots: [
       {
-        pitch: -10,
-        yaw: 0,
+        // Destination: Entrance_Acdemic → Location 7 (index 6)
+        yaw: -4.96,
+        pitch: 3.33,
         type: 'custom',
-        text: 'Go to Location 2',
-        handleClick: (setCurrentLocation) => setCurrentLocation(1)
+        text: 'Go to Entrance_Acdemic',
+        handleClick: (setCurrentLocation) => setCurrentLocation(6)
       },
       {
-        pitch: 15,
-        yaw: 90,
-        type: 'info',
-        text: 'Learn More',
-        handleClick: null
+        // Destination: Campus_View → Location 5 (index 4)
+        yaw: 81.83,
+        pitch: 7.39,
+        type: 'custom',
+        text: 'Go to Campus_View',
+        handleClick: (setCurrentLocation) => setCurrentLocation(4)
+      },
+      {
+        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        yaw: -124.78,
+        pitch: 1.07,
+        type: 'custom',
+        text: 'Go to Uni_Ground_Pathway_1',
+        handleClick: (setCurrentLocation) => setCurrentLocation(1)
       }
     ]
   },
   {
     id: 2,
-    title: 'Location 2',
-    image: `${process.env.PUBLIC_URL}/images/2.jpg`,
-    info: 'Step into the serene views of Location 2.',
+    title: 'Uni_Ground_Pathway_1',
+    image: `${process.env.PUBLIC_URL}/images/Uni_Ground_Pathway_1.jpg`,
+    info: 'Step into the serene views of Uni_Ground_Pathway_1.',
     hotSpots: [
       {
-        pitch: -10,
-        yaw: 0,
+        // Destination: Uni_Ground → Location 1 (index 0)
+        yaw: 14.89,
+        pitch: -0.28,
         type: 'custom',
-        text: 'Go to Location 3',
-        handleClick: (setCurrentLocation) => setCurrentLocation(2)
+        text: 'Go to Uni_Ground',
+        handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        pitch: 10,
-        yaw: 80,
-        type: 'info',
-        text: 'More Details',
-        handleClick: null
+        // Destination: Admin_View → Location 12 (index 11)
+        yaw: 44.66,
+        pitch: 7.84,
+        type: 'custom',
+        text: 'Go to Admin_View',
+        handleClick: (setCurrentLocation) => setCurrentLocation(11)
+      },
+      {
+        // Destination: Uni_Ground_Pathway_2 → Location 3 (index 2)
+        yaw: 133.71,
+        pitch: 6.48,
+        type: 'custom',
+        text: 'Go to Uni_Ground_Pathway_2',
+        handleClick: (setCurrentLocation) => setCurrentLocation(2)
       }
     ]
   },
   {
     id: 3,
-    title: 'Location 3',
-    image: `${process.env.PUBLIC_URL}/images/3.jpg`,
-    info: 'Discover the historical charm of Location 3.',
+    title: 'Uni_Ground_Pathway_2',
+    image: `${process.env.PUBLIC_URL}/images/Uni_Ground_Pathway_2.jpg`,
+    info: 'Discover the historical charm of Uni_Ground_Pathway_2.',
     hotSpots: [
       {
-        pitch: -12,
-        yaw: 5,
+        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        yaw: -63.61,
+        pitch: -5.24,
         type: 'custom',
-        text: 'Go to Location 4',
-        handleClick: (setCurrentLocation) => setCurrentLocation(3)
+        text: 'Go to Uni_Ground_Pathway_1',
+        handleClick: (setCurrentLocation) => setCurrentLocation(1)
       },
       {
-        pitch: 18,
-        yaw: 70,
-        type: 'info',
-        text: 'View Info',
-        handleClick: null
+        // Destination: Admin_Pathway → Location 6 (index 5)
+        yaw: 27.70,
+        pitch: 5.58,
+        type: 'custom',
+        text: 'Go to Admin_Pathway',
+        handleClick: (setCurrentLocation) => setCurrentLocation(5)
       }
     ]
   },
   {
     id: 4,
-    title: 'Location 4',
-    image: `${process.env.PUBLIC_URL}/images/4.jpg`,
-    info: 'Immerse yourself in the beauty of Location 4.',
+    title: 'Admin_Block_Front',
+    image: `${process.env.PUBLIC_URL}/images/Admin_Block_Front.jpg`,
+    info: 'Immerse yourself in the beauty of Admin_Block_Front.',
     hotSpots: [
       {
-        pitch: -8,
-        yaw: 15,
+        // Destination: Admin_Pathway → Location 6 (index 5)
+        yaw: -39.25,
+        pitch: 1.97,
         type: 'custom',
-        text: 'Go to Location 5',
-        handleClick: (setCurrentLocation) => setCurrentLocation(4)
+        text: 'Go to Admin_Pathway',
+        handleClick: (setCurrentLocation) => setCurrentLocation(5)
       },
       {
-        pitch: 12,
-        yaw: 95,
-        type: 'info',
-        text: 'Discover More',
-        handleClick: null
+        // Destination: Campus_View → Location 5 (index 4)
+        yaw: 103.94,
+        pitch: 3.33,
+        type: 'custom',
+        text: 'Go to Campus_View',
+        handleClick: (setCurrentLocation) => setCurrentLocation(4)
       }
     ]
   },
   {
     id: 5,
-    title: 'Location 5',
-    image: `${process.env.PUBLIC_URL}/images/5.jpg`,
-    info: 'Witness breathtaking scenes at Location 5.',
+    title: 'Campus_View',
+    image: `${process.env.PUBLIC_URL}/images/Campus_View.jpg`,
+    info: 'Witness breathtaking scenes at Campus_View.',
     hotSpots: [
       {
-        pitch: -10,
-        yaw: 0,
+        // Destination: Uni_Ground → Location 1 (index 0)
+        yaw: 64.51,
+        pitch: -5.24,
         type: 'custom',
-        text: 'Go to Location 6',
-        handleClick: (setCurrentLocation) => setCurrentLocation(5)
-      },
-      {
-        pitch: 14,
-        yaw: 85,
-        type: 'info',
-        text: 'More Info',
-        handleClick: null
+        text: 'Go to Uni_Ground',
+        handleClick: (setCurrentLocation) => setCurrentLocation(0)
       }
     ]
   },
   {
     id: 6,
-    title: 'Location 6',
-    image: `${process.env.PUBLIC_URL}/images/6.jpg`,
-    info: 'Experience the dynamic energy of Location 6.',
+    title: 'Admin_Pathway',
+    image: `${process.env.PUBLIC_URL}/images/Admin_Pathway.jpg`,
+    info: 'Experience the dynamic energy of Admin_Pathway.',
     hotSpots: [
       {
-        pitch: -10,
-        yaw: 0,
+        // Destination: Admin_Block_Front → Location 4 (index 3)
+        yaw: 76.24,
+        pitch: -6.15,
         type: 'custom',
-        text: 'Go to Location 7',
-        handleClick: (setCurrentLocation) => setCurrentLocation(6)
+        text: 'Go to Admin_Block_Front',
+        handleClick: (setCurrentLocation) => setCurrentLocation(3)
       },
       {
-        pitch: 16,
-        yaw: 100,
-        type: 'info',
-        text: 'Learn More',
-        handleClick: null
+        // Destination: Uni_Ground_Pathway_2 → Location 3 (index 2)
+        yaw: 0.63,
+        pitch: -2.54,
+        type: 'custom',
+        text: 'Go to Uni_Ground_Pathway_2',
+        handleClick: (setCurrentLocation) => setCurrentLocation(2)
       }
     ]
   },
   {
     id: 7,
-    title: 'Location 7',
-    image: `${process.env.PUBLIC_URL}/images/7.jpg`,
-    info: 'Conclude your tour with the stunning Location 7.',
+    title: 'Entrance_Acdemic',
+    image: `${process.env.PUBLIC_URL}/images/Entrance_Acdemic.jpg`,
+    info: 'Conclude your tour with the stunning Entrance_Acdemic.',
     hotSpots: [
       {
-        pitch: -10,
-        yaw: 0,
+        // Destination: Uni_Ground → Location 1 (index 0)
+        yaw: -177.74,
+        pitch: -7.50,
         type: 'custom',
-        text: 'Back to Location 1',
+        text: 'Go to Uni_Ground',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        pitch: 20,
-        yaw: 110,
-        type: 'info',
-        text: 'Final Info',
-        handleClick: null
+        // Destination: Computer_Lab → Location 8 (index 7)
+        yaw: 27.25,
+        pitch: -5.24,
+        type: 'custom',
+        text: 'Go to Computer_Lab',
+        handleClick: (setCurrentLocation) => setCurrentLocation(7)
+      }
+    ]
+  },
+  {
+    id: 8,
+    title: 'Computer_Lab',
+    image: `${process.env.PUBLIC_URL}/images/Computer_Lab.jpg`,
+    info: 'Embrace the charm of Computer_Lab.',
+    hotSpots: [
+      {
+        // Destination: Library_First_Floor → Location 9 (index 8)
+        yaw: 121.35,
+        pitch: -21.48,
+        type: 'custom',
+        text: 'Go to Library_First_Floor',
+        handleClick: (setCurrentLocation) => setCurrentLocation(8)
+      }
+    ]
+  },
+  {
+    id: 9,
+    title: 'Library_First_Floor',
+    image: `${process.env.PUBLIC_URL}/images/Library_First_Floor.jpg`,
+    info: 'Bask in the serene environment of Library_First_Floor.',
+    hotSpots: [
+      {
+        // Destination: Library_Second_Floor → Location 10 (index 9)
+        yaw: 120.90,
+        pitch: -7.50,
+        type: 'custom',
+        text: 'Go to Library_Second_Floor',
+        handleClick: (setCurrentLocation) => setCurrentLocation(9)
+      },
+      {
+        // Destination: Uni_Ground → Location 1 (index 0)
+        yaw: 141.38,
+        pitch: -8.40,
+        type: 'custom',
+        text: 'Go to Uni_Ground',
+        handleClick: (setCurrentLocation) => setCurrentLocation(0)
+      }
+    ]
+  },
+  {
+    id: 10,
+    title: 'Library_Second_Floor',
+    image: `${process.env.PUBLIC_URL}/images/Library_Second_Floor.jpg`,
+    info: 'Delight in the scenic beauty of Library_Second_Floor.',
+    hotSpots: [
+      {
+        // Destination: Library_First_Floor → Location 9 (index 8)
+        yaw: -116.84,
+        pitch: -6.60,
+        type: 'custom',
+        text: 'Go to Library_First_Floor',
+        handleClick: (setCurrentLocation) => setCurrentLocation(8)
+      }
+    ]
+  },
+  {
+    id: 11,
+    title: 'Cafe_1',
+    image: `${process.env.PUBLIC_URL}/images/Cafe_1.jpg`,
+    info: 'Experience the unique allure of Cafe_1.',
+    hotSpots: [
+      {
+        // Destination: Admin_View → Location 12 (index 11)
+        yaw: 83.46,
+        pitch: -6.60,
+        type: 'custom',
+        text: 'Go to Admin_View',
+        handleClick: (setCurrentLocation) => setCurrentLocation(11)
+      }
+    ]
+  },
+  {
+    id: 12,
+    title: 'Admin_View',
+    image: `${process.env.PUBLIC_URL}/images/Admin_View.jpg`,
+    info: 'Conclude your journey with the captivating views of Admin_View.',
+    hotSpots: [
+      {
+        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        yaw: 168.72,
+        pitch: -4.79,
+        type: 'custom',
+        text: 'Go to Uni_Ground_Pathway_1',
+        handleClick: (setCurrentLocation) => setCurrentLocation(1)
       }
     ]
   }
 ];
+
 
 const TourView = () => {
   const [currentLocation, setCurrentLocation] = useState(0);
