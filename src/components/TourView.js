@@ -1,14 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Pannellum } from 'pannellum-react';
 import styled, { keyframes } from 'styled-components';
 
-// Spinner keyframes for loading animation
+/* ----------------------------------
+   Spinner keyframes for loading animation
+------------------------------------- */
 const spin = keyframes`
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 `;
 
-// Main viewer container with a dark background
+/* ----------------------------------
+   Main viewer container with a dark background
+------------------------------------- */
 const ViewerContainer = styled.div`
   position: relative;
   height: 100vh;
@@ -16,26 +20,31 @@ const ViewerContainer = styled.div`
   background-color: #000;
 `;
 
-// Styled info box at top left (displays location title and description)
+/* ----------------------------------
+   Improved Location Info Box
+------------------------------------- */
 const LocationInfo = styled.div`
   position: absolute;
-  top: 5px;
+  top: 20px;
   left: 40px;
   background-color: rgba(20, 20, 20, 0.85);
   color: #fff;
-  padding: 16px 24px;
-  border-radius: 8px;
+  padding: 20px 28px;
+  border-radius: 10px;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  max-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  font-size: 1rem;
 `;
 
-// Glassmorphism style for buttons
+/* ----------------------------------
+   Glassmorphism style for buttons (text color updated to black)
+------------------------------------- */
 const GlassButton = styled.button`
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: 600;
-  color: #fdfdfd;
+  color: #000; /* Black text */
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50px;
@@ -50,7 +59,9 @@ const GlassButton = styled.button`
   }
 `;
 
-// Fullscreen toggle button at top right (ensuring it stays visible)
+/* ----------------------------------
+   Fullscreen toggle button at top right
+------------------------------------- */
 const FullscreenButton = styled(GlassButton)`
   position: absolute;
   top: 20px;
@@ -61,7 +72,29 @@ const FullscreenButton = styled(GlassButton)`
   z-index: 1100;
 `;
 
-// Loading overlay with a spinner
+/* ----------------------------------
+   Home button positioned at bottom left
+------------------------------------- */
+const HomeButton = styled(GlassButton)`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1100;
+`;
+
+/* ----------------------------------
+   All Views button positioned at bottom right
+------------------------------------- */
+const AllViewsButton = styled(GlassButton)`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1100;
+`;
+
+/* ----------------------------------
+   Loading overlay with a spinner
+------------------------------------- */
 const LoadingOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -84,7 +117,9 @@ const Spinner = styled.div`
   animation: ${spin} 1s linear infinite;
 `;
 
-// Navigation container for previous and next buttons, positioned at the bottom center
+/* ----------------------------------
+   Navigation container for previous and next buttons
+------------------------------------- */
 const NavButtonContainer = styled.div`
   position: absolute;
   bottom: 20px;
@@ -95,13 +130,17 @@ const NavButtonContainer = styled.div`
   gap: 20px;
 `;
 
-// Navigation buttons using the glass style
+/* ----------------------------------
+   Navigation buttons using the glass style
+------------------------------------- */
 const NavigationButton = styled(GlassButton)`
   padding: 12px 24px;
   font-size: 1rem;
 `;
 
-// Modal overlay for displaying hotspot information
+/* ----------------------------------
+   Modal overlay for displaying popups (tutorial, info, view selection)
+------------------------------------- */
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -113,34 +152,127 @@ const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 3000;
+  opacity: ${({ show }) => (show ? 1 : 0)};
+  transition: opacity 0.3s ease;
 `;
 
-// Modal content styling
+/* ----------------------------------
+   Base Modal content styling
+------------------------------------- */
 const ModalContent = styled.div`
   background: #fff;
   color: #333;
   padding: 24px 32px;
   border-radius: 8px;
-  max-width: 400px;
+  max-width: 600px;
+  width: 90%;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 `;
 
-// Modal close button using glass style for consistency
+/* ----------------------------------
+   Improved Tutorial Content styling
+------------------------------------- */
+const TutorialContent = styled(ModalContent)`
+  max-width: 550px;
+  padding: 40px 48px;
+  border-radius: 16px;
+`;
+
+/* ----------------------------------
+   Modal close button using glass style (text color updated)
+------------------------------------- */
 const ModalCloseButton = styled(GlassButton)`
   padding: 10px 20px;
   margin-top: 20px;
   font-size: 0.9rem;
   background: rgba(20, 20, 20, 0.15);
   border: 1px solid rgba(20, 20, 20, 0.3);
-  color: #fdfdfd;
+  color: #000;
 
   &:hover {
     background: rgba(20, 20, 20, 0.25);
   }
 `;
 
-// Reusable modal component for hotspot information
+/* ----------------------------------
+   Container for the "All Views" modal content
+------------------------------------- */
+const ViewsModalContent = styled(ModalContent)`
+  max-height: 80vh;
+  overflow-y: auto;
+`;
+
+/* ----------------------------------
+   Grid container for view cards
+------------------------------------- */
+const ViewGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+/* ----------------------------------
+   Styled card for each view (glassmorphism style)
+------------------------------------- */
+const ViewCard = styled.div`
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  width: 150px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: rgba(255, 255, 255, 0.25);
+  }
+`;
+
+/* ----------------------------------
+   Thumbnail image for each view card
+------------------------------------- */
+const Thumbnail = styled.img`
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+`;
+
+/* ----------------------------------
+   Card title styling for each view card
+------------------------------------- */
+const CardTitle = styled.div`
+  padding: 8px;
+  color: #000;
+  font-weight: 600;
+  text-align: center;
+`;
+
+/* ----------------------------------
+   Progress Bar for the tutorial steps
+------------------------------------- */
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+`;
+const ProgressBarFill = styled.div`
+  height: 8px;
+  background: #000;
+  width: ${({ progress }) => progress}%;
+  transition: width 0.3s ease;
+`;
+
+/* ----------------------------------
+   Reusable modal component for hotspot information
+------------------------------------- */
 const InfoModal = ({ show, onClose, title, message }) => (
   <ModalOverlay show={show}>
     <ModalContent>
@@ -151,12 +283,9 @@ const InfoModal = ({ show, onClose, title, message }) => (
   </ModalOverlay>
 );
 
-/* ---------------------------------------------------------------------------
-   Tour location data and hotspot configuration:
-   The tour now includes 7 locations. Each location has:
-     - A navigation hotspot (to go to the next image; the last location loops back to the first)
-     - An info hotspot (to display additional information)
---------------------------------------------------------------------------- */
+/* ----------------------------------
+   Tour location data and hotspot configuration
+------------------------------------- */
 const locations = [
   {
     id: 1,
@@ -165,17 +294,13 @@ const locations = [
     info: 'Explore the vibrant atmosphere of Location 1.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 2
         pitch: -10,
         yaw: 0,
         type: 'custom',
         text: 'Go to Location 2',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(1);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(1)
       },
       {
-        // Info hotspot
         pitch: 15,
         yaw: 90,
         type: 'info',
@@ -191,17 +316,13 @@ const locations = [
     info: 'Step into the serene views of Location 2.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 3
         pitch: -10,
         yaw: 0,
         type: 'custom',
         text: 'Go to Location 3',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(2);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(2)
       },
       {
-        // Info hotspot
         pitch: 10,
         yaw: 80,
         type: 'info',
@@ -217,17 +338,13 @@ const locations = [
     info: 'Discover the historical charm of Location 3.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 4
         pitch: -12,
         yaw: 5,
         type: 'custom',
         text: 'Go to Location 4',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(3);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(3)
       },
       {
-        // Info hotspot
         pitch: 18,
         yaw: 70,
         type: 'info',
@@ -243,17 +360,13 @@ const locations = [
     info: 'Immerse yourself in the beauty of Location 4.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 5
         pitch: -8,
         yaw: 15,
         type: 'custom',
         text: 'Go to Location 5',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(4);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(4)
       },
       {
-        // Info hotspot
         pitch: 12,
         yaw: 95,
         type: 'info',
@@ -269,17 +382,13 @@ const locations = [
     info: 'Witness breathtaking scenes at Location 5.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 6
         pitch: -10,
         yaw: 0,
         type: 'custom',
         text: 'Go to Location 6',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(5);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(5)
       },
       {
-        // Info hotspot
         pitch: 14,
         yaw: 85,
         type: 'info',
@@ -295,17 +404,13 @@ const locations = [
     info: 'Experience the dynamic energy of Location 6.',
     hotSpots: [
       {
-        // Navigation hotspot: go to Location 7
         pitch: -10,
         yaw: 0,
         type: 'custom',
         text: 'Go to Location 7',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(6);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(6)
       },
       {
-        // Info hotspot
         pitch: 16,
         yaw: 100,
         type: 'info',
@@ -321,17 +426,13 @@ const locations = [
     info: 'Conclude your tour with the stunning Location 7.',
     hotSpots: [
       {
-        // Navigation hotspot: loop back to Location 1
         pitch: -10,
         yaw: 0,
         type: 'custom',
         text: 'Back to Location 1',
-        handleClick: (setCurrentLocation) => {
-          setCurrentLocation(0);
-        }
+        handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        // Info hotspot
         pitch: 20,
         yaw: 110,
         type: 'info',
@@ -346,15 +447,54 @@ const TourView = () => {
   const [currentLocation, setCurrentLocation] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [modalInfo, setModalInfo] = useState({ show: false, title: '', message: '' });
+  const [showAllViews, setShowAllViews] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  // Tutorial state: whether to show and which step is current
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [tutorialStep, setTutorialStep] = useState(0);
   const panImageRef = useRef(null);
+
+  // Array of tutorial steps
+  const tutorialSteps = [
+    {
+      title: 'Hotspots',
+      content: 'Click on hotspots within the panorama to learn more about the area.'
+    },
+    {
+      title: 'Navigation',
+      content: 'Use the Previous and Next buttons to move between locations.'
+    },
+    {
+      title: 'All Views',
+      content: 'Click the "All Views" button to see thumbnail previews of every location.'
+    },
+    {
+      title: 'Fullscreen',
+      content: 'Toggle fullscreen mode for an immersive experience.'
+    },
+    {
+      title: 'Home',
+      content: 'Click Home at any time to return to the starting view.'
+    }
+  ];
+
+  // Listen for fullscreen change events so we can update the button text
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   // Get current location data
   const currentData = locations[currentLocation];
 
-  // Navigation handlers (optional if using external navigation buttons)
+  // Navigation handlers
   const goToPreviousLocation = () =>
     setCurrentLocation((prev) => (prev - 1 + locations.length) % locations.length);
-
   const goToNextLocation = () =>
     setCurrentLocation((prev) => (prev + 1) % locations.length);
 
@@ -385,6 +525,18 @@ const TourView = () => {
     setModalInfo({ show: false, title: '', message: '' });
   };
 
+  // Handler for progressing the tutorial
+  const handleTutorialNext = () => {
+    if (tutorialStep < tutorialSteps.length - 1) {
+      setTutorialStep(tutorialStep + 1);
+    } else {
+      setShowTutorial(false);
+    }
+  };
+
+  // Calculate progress percentage for the progress bar
+  const progressPercent = ((tutorialStep + 1) / tutorialSteps.length) * 100;
+
   return (
     <ViewerContainer>
       {/* Loading overlay with spinner */}
@@ -394,8 +546,14 @@ const TourView = () => {
 
       {/* Fullscreen toggle button */}
       <FullscreenButton onClick={toggleFullscreen}>
-        Fullscreen
+        {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </FullscreenButton>
+
+      {/* Home button */}
+      <HomeButton onClick={() => setCurrentLocation(0)}>Home</HomeButton>
+
+      {/* All Views button */}
+      <AllViewsButton onClick={() => setShowAllViews(true)}>All Views</AllViewsButton>
 
       {/* Location information box */}
       <LocationInfo>
@@ -408,10 +566,10 @@ const TourView = () => {
         width="100%"
         height="100vh"
         image={currentData.image}
-        pitch={10} // Initial pitch
-        yaw={180}  // Initial yaw
+        pitch={10}
+        yaw={180}
         hfov={110}
-        autoRotate={2}  // Auto-rotate speed
+        autoRotate={2}
         ref={panImageRef}
         autoLoad
         onLoad={handlePanoramaLoad}
@@ -434,25 +592,64 @@ const TourView = () => {
         ))}
       </Pannellum>
 
-      {/* Optional external navigation buttons */}
+      {/* External Navigation Buttons */}
       {locations.length > 1 && (
         <NavButtonContainer>
-          <NavigationButton onClick={goToPreviousLocation}>
-            Previous Location
-          </NavigationButton>
-          <NavigationButton onClick={goToNextLocation}>
-            Next Location
-          </NavigationButton>
+          <NavigationButton onClick={goToPreviousLocation}>Previous Location</NavigationButton>
+          <NavigationButton onClick={goToNextLocation}>Next Location</NavigationButton>
         </NavButtonContainer>
       )}
 
-      {/* Info modal for hotspots */}
+      {/* Info Modal for Hotspots */}
       <InfoModal
         show={modalInfo.show}
         onClose={closeModal}
         title={modalInfo.title}
         message={modalInfo.message}
       />
+
+      {/* All Views Modal with Thumbnails */}
+      <ModalOverlay show={showAllViews}>
+        <ViewsModalContent>
+          <h3>Select a View</h3>
+          <ViewGrid>
+            {locations.map((loc, index) => (
+              <ViewCard
+                key={loc.id}
+                onClick={() => {
+                  setCurrentLocation(index);
+                  setShowAllViews(false);
+                }}
+              >
+                <Thumbnail src={loc.image} alt={loc.title} />
+                <CardTitle>{loc.title}</CardTitle>
+              </ViewCard>
+            ))}
+          </ViewGrid>
+          <ModalCloseButton onClick={() => setShowAllViews(false)}>Close</ModalCloseButton>
+        </ViewsModalContent>
+      </ModalOverlay>
+
+      {/* Step-by-Step Tutorial Overlay */}
+      {showTutorial && (
+        <ModalOverlay show={showTutorial}>
+          <TutorialContent>
+            <h3>
+              Step {tutorialStep + 1} of {tutorialSteps.length}: {tutorialSteps[tutorialStep].title}
+            </h3>
+            <ProgressBarContainer>
+              <ProgressBarFill progress={progressPercent} />
+            </ProgressBarContainer>
+            <p>{tutorialSteps[tutorialStep].content}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
+              <GlassButton onClick={() => setShowTutorial(false)}>Skip Tutorial</GlassButton>
+              <GlassButton onClick={handleTutorialNext}>
+                {tutorialStep < tutorialSteps.length - 1 ? 'Next' : 'Finish'}
+              </GlassButton>
+            </div>
+          </TutorialContent>
+        </ModalOverlay>
+      )}
     </ViewerContainer>
   );
 };
