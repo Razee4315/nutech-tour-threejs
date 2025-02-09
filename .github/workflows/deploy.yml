@@ -27,12 +27,10 @@ jobs:
         run: npm install --legacy-peer-deps
       
       - name: Build project
-        run: npm run build
+        run: npm run predeploy
       
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: gh-pages
-          force_orphan: true
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          npx gh-pages -d build -u "GitHub Actions <actions@github.com>"
