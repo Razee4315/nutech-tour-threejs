@@ -93,39 +93,6 @@ const StartButton = styled.button`
   }
 `;
 
-// Card for displaying project extra information
-const InfoCard = styled.div`
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  background: rgba(20, 20, 20, 0.85);
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  max-width: 90%;
-  text-align: left;
-  color: #fff;
-`;
-
-// Title for each info label
-const InfoTitle = styled.span`
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-right: 8px;
-`;
-
-// Each line in the info card
-const InfoLine = styled.div`
- 
-
-
-
-
-
-`;
-
 // The Welcome component
 const Welcome = ({ onStart }) => {
   return (
