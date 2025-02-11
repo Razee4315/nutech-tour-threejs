@@ -139,20 +139,7 @@ const Welcome = ({ onStart }) => {
           <Subtitle>Experience our campus in stunning 360° views</Subtitle>
           <StartButton onClick={onStart}>Start Tour</StartButton>
         </Content>
-        <InfoCard>
-          <InfoLine>
-            <InfoTitle>Project:</InfoTitle> ICAT Project
-          </InfoLine>
-          <InfoLine>
-            <InfoTitle>Program:</InfoTitle> BS AI
-          </InfoLine>
-          <InfoLine>
-            <InfoTitle>Members:</InfoTitle> Saqlain, Aleena, Sadia, Malaika, Aena
-          </InfoLine>
-          <InfoLine>
-            <InfoTitle>Supervisor:</InfoTitle> Tahreem Khalil
-          </InfoLine>
-        </InfoCard>
+        
       </Wrapper>
     </>
   );

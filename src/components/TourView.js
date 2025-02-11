@@ -271,6 +271,28 @@ const ProgressBarFill = styled.div`
 `;
 
 /* ----------------------------------
+   Fixed Hotspot styling for hotspots that should not move with the panorama
+------------------------------------- */
+const FixedHotspot = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1500;
+  font-size: 1rem;
+  color: #000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+  &:hover {
+    background: rgba(255,255,255,1);
+  }
+`;
+
+/* ----------------------------------
    Reusable modal component for hotspot information
 ------------------------------------- */
 const InfoModal = ({ show, onClose, title, message }) => (
@@ -289,273 +311,329 @@ const InfoModal = ({ show, onClose, title, message }) => (
 const locations = [
   {
     id: 1,
-    title: 'Uni_Ground',
-    image: `${process.env.PUBLIC_URL}/images/Uni_Ground.jpg`,
-    info: 'Explore the vibrant atmosphere of Uni_Ground.',
+    title: 'Academic Block',
+    image: `${process.env.PUBLIC_URL}/images/Academic_block.jpg`,
+    info: 'The Academic Block houses classrooms, faculty offices, library, and labs serving as the core space for academic activities.',
     hotSpots: [
       {
-        // Destination: Entrance_Acdemic → Location 7 (index 6)
+        // From Academic Block to Atrium
         yaw: -4.96,
         pitch: 3.33,
         type: 'custom',
-        text: 'Go to Entrance_Acdemic',
+        text: 'Go to Atrium',
         handleClick: (setCurrentLocation) => setCurrentLocation(6)
       },
       {
-        // Destination: Campus_View → Location 5 (index 4)
+        // From Academic Block to Campus Viewpoint
         yaw: 81.83,
         pitch: 7.39,
         type: 'custom',
-        text: 'Go to Campus_View',
+        text: 'Go to Campus Viewpoint',
         handleClick: (setCurrentLocation) => setCurrentLocation(4)
       },
       {
-        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        // From Academic Block to Campus Pathway
         yaw: -124.78,
         pitch: 1.07,
         type: 'custom',
-        text: 'Go to Uni_Ground_Pathway_1',
+        text: 'Go to Campus Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
       }
     ]
   },
   {
     id: 2,
-    title: 'Uni_Ground_Pathway_1',
-    image: `${process.env.PUBLIC_URL}/images/Uni_Ground_Pathway_1.jpg`,
-    info: 'Step into the serene views of Uni_Ground_Pathway_1.',
+    title: 'Campus Pathway',
+    image: `${process.env.PUBLIC_URL}/images/Campus_Pathway.jpg`,
+    info: 'It leads to the main campus, lab block, and auditorium.',
     hotSpots: [
       {
-        // Destination: Uni_Ground → Location 1 (index 0)
+        // From Campus Pathway to Academic Block
         yaw: 14.89,
         pitch: -0.28,
         type: 'custom',
-        text: 'Go to Uni_Ground',
+        text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        // Destination: Admin_View → Location 12 (index 11)
+        // From Campus Pathway to Auditorium External View
         yaw: 44.66,
         pitch: 7.84,
         type: 'custom',
-        text: 'Go to Admin_View',
+        text: 'Go to Auditorium External View',
         handleClick: (setCurrentLocation) => setCurrentLocation(11)
       },
       {
-        // Destination: Uni_Ground_Pathway_2 → Location 3 (index 2)
+        // From Campus Pathway to Main walkway
         yaw: 133.71,
         pitch: 6.48,
         type: 'custom',
-        text: 'Go to Uni_Ground_Pathway_2',
+        text: 'Go to Main walkway',
         handleClick: (setCurrentLocation) => setCurrentLocation(2)
       }
     ]
   },
   {
     id: 3,
-    title: 'Uni_Ground_Pathway_2',
-    image: `${process.env.PUBLIC_URL}/images/Uni_Ground_Pathway_2.jpg`,
-    info: 'Discover the historical charm of Uni_Ground_Pathway_2.',
+    title: 'Main walkway',
+    image: `${process.env.PUBLIC_URL}/images/Main_walkway.jpg`,
+    info: 'It serves as the primary route leading to campus and the Admin Block.',
     hotSpots: [
       {
-        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        // From Main walkway to Campus Pathway
         yaw: -63.61,
         pitch: -5.24,
         type: 'custom',
-        text: 'Go to Uni_Ground_Pathway_1',
+        text: 'Go to Campus Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
       },
       {
-        // Destination: Admin_Pathway → Location 6 (index 5)
+        // From Main walkway to Admin Pathway
         yaw: 27.70,
         pitch: 5.58,
         type: 'custom',
-        text: 'Go to Admin_Pathway',
+        text: 'Go to Admin Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(5)
+      },
+      {
+        // New hotspot: from Main walkway to Main Entrance
+        yaw: -162.86,
+        pitch: 8.29,
+        type: 'custom',
+        text: 'Go to Main Entrance',
+        handleClick: (setCurrentLocation) => setCurrentLocation(13)
       }
     ]
   },
   {
     id: 4,
-    title: 'Admin_Block_Front',
-    image: `${process.env.PUBLIC_URL}/images/Admin_Block_Front.jpg`,
-    info: 'Immerse yourself in the beauty of Admin_Block_Front.',
+    title: 'Admin_Block',
+    image: `${process.env.PUBLIC_URL}/images/Admin_Block.jpg`,
+    info: 'Admin Block houses the administrative offices including admissions, student services, and administration.',
     hotSpots: [
       {
-        // Destination: Admin_Pathway → Location 6 (index 5)
+        // From Admin_Block to Admin Pathway
         yaw: -39.25,
         pitch: 1.97,
         type: 'custom',
-        text: 'Go to Admin_Pathway',
+        text: 'Go to Admin Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(5)
       },
       {
-        // Destination: Campus_View → Location 5 (index 4)
+        // From Admin_Block to Campus Viewpoint
         yaw: 103.94,
         pitch: 3.33,
         type: 'custom',
-        text: 'Go to Campus_View',
+        text: 'Go to Campus Viewpoint',
         handleClick: (setCurrentLocation) => setCurrentLocation(4)
       }
     ]
   },
   {
     id: 5,
-    title: 'Campus_View',
-    image: `${process.env.PUBLIC_URL}/images/Campus_View.jpg`,
-    info: 'Witness breathtaking scenes at Campus_View.',
+    title: 'Campus Viewpoint',
+    image: `${process.env.PUBLIC_URL}/images/Campus_Viewpoint.jpg`,
+    info: 'Experience the beauty of Campus Viewpoint.',
     hotSpots: [
       {
-        // Destination: Uni_Ground → Location 1 (index 0)
+        // From Campus Viewpoint to Academic Block
         yaw: 64.51,
         pitch: -5.24,
         type: 'custom',
-        text: 'Go to Uni_Ground',
+        text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       }
     ]
   },
   {
     id: 6,
-    title: 'Admin_Pathway',
+    title: 'Admin Pathway',
     image: `${process.env.PUBLIC_URL}/images/Admin_Pathway.jpg`,
-    info: 'Experience the dynamic energy of Admin_Pathway.',
+    info: 'Admin Pathway leads to the administrative block.',
     hotSpots: [
       {
-        // Destination: Admin_Block_Front → Location 4 (index 3)
+        // From Admin Pathway to Admin_Block
         yaw: 76.24,
         pitch: -6.15,
         type: 'custom',
-        text: 'Go to Admin_Block_Front',
+        text: 'Go to Admin Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(3)
       },
       {
-        // Destination: Uni_Ground_Pathway_2 → Location 3 (index 2)
+        // From Admin Pathway to Main walkway
         yaw: 0.63,
         pitch: -2.54,
         type: 'custom',
-        text: 'Go to Uni_Ground_Pathway_2',
+        text: 'Go to Main walkway',
         handleClick: (setCurrentLocation) => setCurrentLocation(2)
       }
     ]
   },
   {
     id: 7,
-    title: 'Entrance_Acdemic',
-    image: `${process.env.PUBLIC_URL}/images/Entrance_Acdemic.jpg`,
-    info: 'Conclude your tour with the stunning Entrance_Acdemic.',
+    title: 'Atrium',
+    image: `${process.env.PUBLIC_URL}/images/Atrium.jpg`,
+    info: 'The Atrium is a central hub featuring a student facility desk and gateway to the classes, library, and faculty offices.',
     hotSpots: [
       {
-        // Destination: Uni_Ground → Location 1 (index 0)
-        yaw: -177.74,
-        pitch: -7.50,
+        // New hotspot: go to Computer Lab
+        yaw: 27.52,
+        pitch: -5.70,
         type: 'custom',
-        text: 'Go to Uni_Ground',
+        text: 'Go to Computer Lab',
+        handleClick: (setCurrentLocation) => setCurrentLocation(7)
+      },
+      {
+        // New hotspot: go to Library (Library First Floor)
+        yaw: -176.84,
+        pitch: -7.05,
+        type: 'custom',
+        text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        // Destination: Computer_Lab → Location 8 (index 7)
-        yaw: 27.25,
-        pitch: -5.24,
+        // New hotspot: go to Classroom
+        yaw: 45.74,
+        pitch: -1.64,
         type: 'custom',
-        text: 'Go to Computer_Lab',
-        handleClick: (setCurrentLocation) => setCurrentLocation(7)
+        text: 'Go to Classroom',
+        handleClick: (setCurrentLocation) => setCurrentLocation(12)
       }
     ]
   },
   {
     id: 8,
-    title: 'Computer_Lab',
+    title: 'Computer Lab',
     image: `${process.env.PUBLIC_URL}/images/Computer_Lab.jpg`,
-    info: 'Embrace the charm of Computer_Lab.',
+    info: 'The Computer Lab offers a workspace for students to work on their projects and perform necessary tasks.',
     hotSpots: [
       {
-        // Destination: Library_First_Floor → Location 9 (index 8)
+        // From Computer Lab to Library First Floor
         yaw: 121.35,
         pitch: -21.48,
         type: 'custom',
-        text: 'Go to Library_First_Floor',
+        text: 'Go to Library First Floor',
         handleClick: (setCurrentLocation) => setCurrentLocation(8)
       }
     ]
   },
   {
     id: 9,
-    title: 'Library_First_Floor',
+    title: 'Library First Floor',
     image: `${process.env.PUBLIC_URL}/images/Library_First_Floor.jpg`,
-    info: 'Bask in the serene environment of Library_First_Floor.',
+    info: 'The library offers a variety of digital resources and books to students.',
     hotSpots: [
       {
-        // Destination: Library_Second_Floor → Location 10 (index 9)
+        // From Library First Floor to Library Second Floor
         yaw: 120.90,
         pitch: -7.50,
         type: 'custom',
-        text: 'Go to Library_Second_Floor',
+        text: 'Go to Library Second Floor',
         handleClick: (setCurrentLocation) => setCurrentLocation(9)
       },
       {
-        // Destination: Uni_Ground → Location 1 (index 0)
+        // From Library First Floor to Academic Block
         yaw: 141.38,
         pitch: -8.40,
         type: 'custom',
-        text: 'Go to Uni_Ground',
+        text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       }
     ]
   },
   {
     id: 10,
-    title: 'Library_Second_Floor',
+    title: 'Library Second Floor',
     image: `${process.env.PUBLIC_URL}/images/Library_Second_Floor.jpg`,
-    info: 'Delight in the scenic beauty of Library_Second_Floor.',
+    info: 'This is the second floor of the library.',
     hotSpots: [
       {
-        // Destination: Library_First_Floor → Location 9 (index 8)
+        // From Library Second Floor to Library First Floor
         yaw: -116.84,
         pitch: -6.60,
         type: 'custom',
-        text: 'Go to Library_First_Floor',
+        text: 'Go to Library First Floor',
         handleClick: (setCurrentLocation) => setCurrentLocation(8)
       }
     ]
   },
   {
     id: 11,
-    title: 'Cafe_1',
-    image: `${process.env.PUBLIC_URL}/images/Cafe_1.jpg`,
-    info: 'Experience the unique allure of Cafe_1.',
+    title: 'Faculty and Girls Cafe',
+    image: `${process.env.PUBLIC_URL}/images/Facualty_and_girl_cafe.jpg`,
+    info: 'The cafe offers a cozy space for students and staff to unwind, socialize, and enjoy delicious meals and refreshments.',
     hotSpots: [
       {
-        // Destination: Admin_View → Location 12 (index 11)
+        // From Faculty and Girls Cafe to Auditorium External View
         yaw: 83.46,
         pitch: -6.60,
         type: 'custom',
-        text: 'Go to Admin_View',
+        text: 'Go to Auditorium External View',
         handleClick: (setCurrentLocation) => setCurrentLocation(11)
       }
     ]
   },
   {
     id: 12,
-    title: 'Admin_View',
-    image: `${process.env.PUBLIC_URL}/images/Admin_View.jpg`,
-    info: 'Conclude your journey with the captivating views of Admin_View.',
+    title: 'Auditorium External View',
+    image: `${process.env.PUBLIC_URL}/images/Auditorium_external_view.jpg`,
+    info: 'This is the external view of the auditorium.',
     hotSpots: [
       {
-        // Destination: Uni_Ground_Pathway_1 → Location 2 (index 1)
+        // From Auditorium External View to Campus Pathway
         yaw: 168.72,
         pitch: -4.79,
         type: 'custom',
-        text: 'Go to Uni_Ground_Pathway_1',
+        text: 'Go to Campus Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
+      },
+      {
+        // New hotspot: from Auditorium External View to Faculty and Girls Cafe
+        yaw: -49.62,
+        pitch: -0.28,
+        type: 'custom',
+        text: 'Go to Faculty and Girls Cafe',
+        handleClick: (setCurrentLocation) => setCurrentLocation(10)
+      }
+    ]
+  },
+  {
+    id: 13,
+    title: 'Classroom',
+    image: `${process.env.PUBLIC_URL}/images/classroom.jpg`,
+    info: 'This view shows the classroom.',
+    hotSpots: [
+      {
+        // In Classroom, tap to return to Atrium
+        yaw: -107.82,
+        pitch: -7.50,
+        type: 'custom',
+        text: 'Go to Atrium',
+        handleClick: (setCurrentLocation) => setCurrentLocation(6)
+      }
+    ]
+  },
+  {
+    id: 14,
+    title: 'Main Entrance',
+    image: `${process.env.PUBLIC_URL}/images/main_entrance.jpg`,
+    info: 'This view shows the main entrance.',
+    hotSpots:
+    [
+      {
+        yaw: -1.35,
+        pitch: 0.62,
+        type: 'custom',
+        text: 'Go to Main walkway',
+        handleClick: (setCurrentLocation) => setCurrentLocation(2)
       }
     ]
   }
 ];
 
-
 const TourView = () => {
-  const [currentLocation, setCurrentLocation] = useState(0);
+  // Set initial state to index 13 (Main Entrance)
+  const [currentLocation, setCurrentLocation] = useState(13);
   const [isLoading, setIsLoading] = useState(true);
   const [modalInfo, setModalInfo] = useState({ show: false, title: '', message: '' });
   const [showAllViews, setShowAllViews] = useState(false);
@@ -661,7 +739,7 @@ const TourView = () => {
       </FullscreenButton>
 
       {/* Home button */}
-      <HomeButton onClick={() => setCurrentLocation(0)}>Home</HomeButton>
+      <HomeButton onClick={() => setCurrentLocation(13)}>Home</HomeButton>
 
       {/* All Views button */}
       <AllViewsButton onClick={() => setShowAllViews(true)}>All Views</AllViewsButton>
@@ -672,36 +750,53 @@ const TourView = () => {
         <p>{currentData.info}</p>
       </LocationInfo>
 
-      {/* 360° Panorama Viewer */}
+      {/* 360° Panorama Viewer with autorotate active and centered view */}
       <Pannellum
         width="100%"
         height="100vh"
         image={currentData.image}
-        pitch={10}
-        yaw={180}
+        pitch={0}
+        yaw={0}
         hfov={110}
         autoRotate={2}
         ref={panImageRef}
         autoLoad
         onLoad={handlePanoramaLoad}
       >
-        {currentData.hotSpots.map((hotspot, index) => (
-          <Pannellum.Hotspot
-            key={index}
-            type={hotspot.type}
-            pitch={hotspot.pitch}
-            yaw={hotspot.yaw}
-            text={hotspot.text}
-            handleClick={() => {
-              if (hotspot.handleClick) {
-                hotspot.handleClick(setCurrentLocation);
-              } else {
-                handleHotspotInfo(hotspot);
-              }
-            }}
-          />
-        ))}
+        {/* Render only non-fixed hotspots inside the panorama */}
+        {currentData.hotSpots
+          .filter((hotspot) => !hotspot.fixed)
+          .map((hotspot, index) => (
+            <Pannellum.Hotspot
+              key={index}
+              type={hotspot.type}
+              pitch={hotspot.pitch}
+              yaw={hotspot.yaw}
+              text={hotspot.text}
+              handleClick={() => {
+                if (hotspot.handleClick) {
+                  hotspot.handleClick(setCurrentLocation);
+                } else {
+                  handleHotspotInfo(hotspot);
+                }
+              }}
+            />
+          ))}
       </Pannellum>
+
+      {/* Render fixed hotspots (they will remain at the defined position regardless of panorama rotation) */}
+      {currentData.hotSpots
+        .filter((hotspot) => hotspot.fixed)
+        .map((hotspot, index) => (
+          <FixedHotspot
+            key={index}
+            onClick={() => {
+              hotspot.handleClick(setCurrentLocation);
+            }}
+          >
+            {hotspot.text}
+          </FixedHotspot>
+        ))}
 
       {/* External Navigation Buttons */}
       {locations.length > 1 && (
