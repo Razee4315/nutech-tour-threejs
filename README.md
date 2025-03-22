@@ -96,6 +96,7 @@ Hotspots are interactive points on a 360° panoramic image that users can click 
 
 ## Contact
 
-Your Name - saqlainrazee@gmail.com
+Our Team members:
+Saqlain Abbas (saqlainrazee@gmail.com)
 
 Project Link: [https://github.com/Razee4315/nutech-tour](https://github.com/Razee4315/nutech-tour)
