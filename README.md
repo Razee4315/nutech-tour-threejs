@@ -101,4 +101,4 @@ Our Team members:
 - 
 - 
 
-Project Link: [https://github.com/Razee4315/nutech-tour](https://github.com/Razee4315/nutech-tour)
+Project Link: [https://razee4315.github.io/nutech-tour/](https://razee4315.github.io/nutech-tour/)
