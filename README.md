@@ -99,7 +99,7 @@ Hotspots are interactive points on a 360° panoramic image that users can click 
 Our Team members:
 - Saqlain Abbas (saqlainrazee@gmail.com)
 - Aleena Tahir (aleenatahirf23@nutech.edu.pk)
-- 
+- Aena Habib (aenahabibf23@nutech.edu.pk)
 - 
 
 Project Link: [https://razee4315.github.io/nutech-tour/](https://razee4315.github.io/nutech-tour/)
