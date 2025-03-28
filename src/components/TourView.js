@@ -102,7 +102,7 @@ const LoadingOverlay = styled.div`
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.85);
-  display: ${({ isLoading }) => (isLoading ? 'flex' : 'none')};
+  display: ${({ $isLoading }) => ($isLoading ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   z-index: 2000;
@@ -118,7 +118,7 @@ const Spinner = styled.div`
 `;
 
 /* ----------------------------------
-   Navigation container for previous and next buttons
+   Navigation container for previous button
 ------------------------------------- */
 const NavButtonContainer = styled.div`
   position: absolute;
@@ -126,12 +126,10 @@ const NavButtonContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  display: flex;
-  gap: 20px;
 `;
 
 /* ----------------------------------
-   Navigation buttons using the glass style
+   Navigation button using the glass style
 ------------------------------------- */
 const NavigationButton = styled(GlassButton)`
   padding: 12px 24px;
@@ -148,11 +146,11 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(20, 20, 20, 0.8);
-  display: ${({ show }) => (show ? 'flex' : 'none')};
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   z-index: 3000;
-  opacity: ${({ show }) => (show ? 1 : 0)};
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
   transition: opacity 0.3s ease;
 `;
 
@@ -266,7 +264,7 @@ const ProgressBarContainer = styled.div`
 const ProgressBarFill = styled.div`
   height: 8px;
   background: #000;
-  width: ${({ progress }) => progress}%;
+  width: ${({ $progress }) => $progress}%;
   transition: width 0.3s ease;
 `;
 
@@ -293,10 +291,10 @@ const FixedHotspot = styled.div`
 `;
 
 /* ----------------------------------
-   Reusable modal component for hotspot information
+   Reusable modal component for hotspot information (no longer needed for info hotspots)
 ------------------------------------- */
-const InfoModal = ({ show, onClose, title, message }) => (
-  <ModalOverlay show={show}>
+const InfoModal = ({ $show, onClose, title, message }) => (
+  <ModalOverlay $show={$show}>
     <ModalContent>
       {title && <h3>{title}</h3>}
       <p>{message}</p>
@@ -316,7 +314,6 @@ const locations = [
     info: 'The Academic Block houses classrooms, faculty offices, library, and labs serving as the core space for academic activities.',
     hotSpots: [
       {
-        // From Academic Block to Atrium
         yaw: -4.96,
         pitch: 3.33,
         type: 'custom',
@@ -324,7 +321,6 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(6)
       },
       {
-        // From Academic Block to Campus Viewpoint
         yaw: 81.83,
         pitch: 7.39,
         type: 'custom',
@@ -332,12 +328,53 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(4)
       },
       {
-        // From Academic Block to Campus Pathway
         yaw: -124.78,
         pitch: 1.07,
         type: 'custom',
         text: 'Go to Campus Pathway',
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
+      },
+      {
+        yaw: -157.51,
+        pitch: 0.16,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Secondary entrance to the Admin Block.'
+      },
+      {
+        yaw: -77.67,
+        pitch: -0.34,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Lab Block: Contains specialized labs for practical learning.'
+      },
+      {
+        yaw: -3.79,
+        pitch: 12.55,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Academic Block: Consists of lecture halls, classrooms, and faculty offices.'
+      },
+      {
+        yaw: 63.72,
+        pitch: 6.50,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'NSDD Office Block'
+      },
+      {
+        yaw: -129.24,
+        pitch: 1.15,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Habib ATM (HBL): On-campus ATM facility for banking services.'
+      },
+      {
+        yaw: -42.96,
+        pitch: 5.61,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Boys’ Cafeteria: Dining area designated for male students.'
       }
     ]
   },
@@ -348,7 +385,6 @@ const locations = [
     info: 'It leads to the main campus, lab block, and auditorium.',
     hotSpots: [
       {
-        // From Campus Pathway to Academic Block
         yaw: 14.89,
         pitch: -0.28,
         type: 'custom',
@@ -356,7 +392,6 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        // From Campus Pathway to Auditorium External View
         yaw: 44.66,
         pitch: 7.84,
         type: 'custom',
@@ -364,12 +399,39 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(11)
       },
       {
-        // From Campus Pathway to Main walkway
         yaw: 133.71,
         pitch: 6.48,
         type: 'custom',
         text: 'Go to Main walkway',
         handleClick: (setCurrentLocation) => setCurrentLocation(2)
+      },
+      {
+        yaw: -15.69,
+        pitch: 11.07,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Lab Block: Houses various engineering and computing labs for practical sessions.'
+      },
+      {
+        yaw: 4.64,
+        pitch: 11.56,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Academic Block: Contains lecture halls, classrooms, and faculty offices.'
+      },
+      {
+        yaw: -38.50,
+        pitch: 1.65,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Parking area designated for faculty members.'
+      },
+      {
+        yaw: 36.87,
+        pitch: 15.53,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Auditorium and Faculty Café: Venue for seminars and events, with a dedicated café for faculty.'
       }
     ]
   },
@@ -380,7 +442,6 @@ const locations = [
     info: 'It serves as the primary route leading to campus and the Admin Block.',
     hotSpots: [
       {
-        // From Main walkway to Campus Pathway
         yaw: -63.61,
         pitch: -5.24,
         type: 'custom',
@@ -388,7 +449,6 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
       },
       {
-        // From Main walkway to Admin Pathway
         yaw: 27.70,
         pitch: 5.58,
         type: 'custom',
@@ -396,12 +456,39 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(5)
       },
       {
-        // New hotspot: from Main walkway to Main Entrance
         yaw: -162.86,
         pitch: 8.29,
         type: 'custom',
         text: 'Go to Main Entrance',
         handleClick: (setCurrentLocation) => setCurrentLocation(13)
+      },
+      {
+        yaw: -155.52,
+        pitch: 6.60,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'NUtech Main Exit Point.'
+      },
+      {
+        yaw: 86.96,
+        pitch: 13.55,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'CTTI Building.'
+      },
+      {
+        yaw: 46.79,
+        pitch: 3.63,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Friendship Park: A recreational space for students.'
+      },
+      {
+        yaw: 2.46,
+        pitch: 3.97,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Flag Area: Displays flags of NUtech and its departments.'
       }
     ]
   },
@@ -412,7 +499,6 @@ const locations = [
     info: 'Admin Block houses the administrative offices including admissions, student services, and administration.',
     hotSpots: [
       {
-        // From Admin_Block to Admin Pathway
         yaw: -39.25,
         pitch: 1.97,
         type: 'custom',
@@ -420,12 +506,32 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(5)
       },
       {
-        // From Admin_Block to Campus Viewpoint
         yaw: 103.94,
         pitch: 3.33,
         type: 'custom',
         text: 'Go to Campus Viewpoint',
         handleClick: (setCurrentLocation) => setCurrentLocation(4)
+      },
+      {
+        yaw: 62.66,
+        pitch: 12.55,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Main entrance to the Admin Block.'
+      },
+      {
+        yaw: -97.01,
+        pitch: 42.31,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'NUtech Tower: One of the prominent buildings on campus.'
+      },
+      {
+        yaw: -158.00,
+        pitch: 5.12,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Al Habib ATM: On-campus ATM facility for banking services.'
       }
     ]
   },
@@ -436,12 +542,39 @@ const locations = [
     info: 'Experience the beauty of Campus Viewpoint.',
     hotSpots: [
       {
-        // From Campus Viewpoint to Academic Block
         yaw: 64.51,
         pitch: -5.24,
         type: 'custom',
         text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
+      },
+      {
+        yaw: 35.88,
+        pitch: 9.08,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Admin Block: Central hub for university administration and student services.'
+      },
+      {
+        yaw: 54.23,
+        pitch: -7.78,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Ground: Open space for sports and student activities.'
+      },
+      {
+        yaw: 93.90,
+        pitch: 18.01,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Academic Block: Includes lecture halls, classrooms, and faculty offices.'
+      },
+      {
+        yaw: 115.37,
+        pitch: 0.43,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'NSDD: Under development for future expansion.'
       }
     ]
   },
@@ -452,7 +585,6 @@ const locations = [
     info: 'Admin Pathway leads to the administrative block.',
     hotSpots: [
       {
-        // From Admin Pathway to Admin_Block
         yaw: 76.24,
         pitch: -6.15,
         type: 'custom',
@@ -460,12 +592,32 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(3)
       },
       {
-        // From Admin Pathway to Main walkway
         yaw: 0.63,
         pitch: -2.54,
         type: 'custom',
         text: 'Go to Main walkway',
         handleClick: (setCurrentLocation) => setCurrentLocation(2)
+      },
+      {
+        yaw: -164.45,
+        pitch: 5.61,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'CTTI Main Building: Central facility of CTTI.'
+      },
+      {
+        yaw: -32.55,
+        pitch: 0.16,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Friendship Park: A recreational area for students.'
+      },
+      {
+        yaw: 54.73,
+        pitch: 1.65,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Main entrance to the Admin Block.'
       }
     ]
   },
@@ -476,7 +628,6 @@ const locations = [
     info: 'The Atrium is a central hub featuring a student facility desk and gateway to the classes, library, and faculty offices.',
     hotSpots: [
       {
-        // New hotspot: go to Computer Lab
         yaw: 27.52,
         pitch: -5.70,
         type: 'custom',
@@ -484,7 +635,6 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(7)
       },
       {
-        // New hotspot: go to Library (Library First Floor)
         yaw: -176.84,
         pitch: -7.05,
         type: 'custom',
@@ -492,12 +642,40 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
       },
       {
-        // New hotspot: go to Classroom
         yaw: 45.74,
         pitch: -1.64,
         type: 'custom',
         text: 'Go to Classroom',
         handleClick: (setCurrentLocation) => setCurrentLocation(12)
+      },
+      {
+        yaw: -67.22,
+        pitch: -5.24,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Student Facilitation Desk: Provides information and support for students.'
+      },
+      {
+        yaw: 0.72,
+        pitch: -2.09,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Lift: Access to all floors of the Academic Block.'
+      },
+      {
+        yaw: 24.18,
+        pitch: 3.33,
+        
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Way to classrooms and computer labs.'
+      },
+      {
+        yaw: 79.22,
+        pitch: -3.44,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Display Point / Sale Point: Area for showcasing and selling university-related items.'
       }
     ]
   },
@@ -508,7 +686,6 @@ const locations = [
     info: 'The Computer Lab offers a workspace for students to work on their projects and perform necessary tasks.',
     hotSpots: [
       {
-        // From Computer Lab to Library First Floor
         yaw: 121.35,
         pitch: -21.48,
         type: 'custom',
@@ -524,7 +701,6 @@ const locations = [
     info: 'The library offers a variety of digital resources and books to students.',
     hotSpots: [
       {
-        // From Library First Floor to Library Second Floor
         yaw: 120.90,
         pitch: -7.50,
         type: 'custom',
@@ -532,12 +708,18 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(9)
       },
       {
-        // From Library First Floor to Academic Block
         yaw: 141.38,
         pitch: -8.40,
         type: 'custom',
         text: 'Go to Academic Block',
         handleClick: (setCurrentLocation) => setCurrentLocation(0)
+      },
+      {
+        yaw: 84.81,
+        pitch: -5.70,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Library Help Desk 1: Main help desk for library services and inquiries.'
       }
     ]
   },
@@ -548,12 +730,25 @@ const locations = [
     info: 'This is the second floor of the library.',
     hotSpots: [
       {
-        // From Library Second Floor to Library First Floor
         yaw: -116.84,
         pitch: -6.60,
         type: 'custom',
         text: 'Go to Library First Floor',
         handleClick: (setCurrentLocation) => setCurrentLocation(8)
+      },
+      {
+        yaw: 164.66,
+        pitch: -1.64,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Conference Room: Reserved for meetings, discussions, and presentations.'
+      },
+      {
+        yaw: -107.10,
+        pitch: -2.99,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Library Help Desk 2: Assistance point for students on the second floor.'
       }
     ]
   },
@@ -564,12 +759,18 @@ const locations = [
     info: 'The cafe offers a cozy space for students and staff to unwind, socialize, and enjoy delicious meals and refreshments.',
     hotSpots: [
       {
-        // From Faculty and Girls Cafe to Auditorium External View
         yaw: 83.46,
         pitch: -6.60,
         type: 'custom',
         text: 'Go to Auditorium External View',
         handleClick: (setCurrentLocation) => setCurrentLocation(11)
+      },
+      {
+        yaw: -59.55,
+        pitch: -6.15,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Cash Counter: Payment point for food and beverages.'
       }
     ]
   },
@@ -580,7 +781,6 @@ const locations = [
     info: 'This is the external view of the auditorium.',
     hotSpots: [
       {
-        // From Auditorium External View to Campus Pathway
         yaw: 168.72,
         pitch: -4.79,
         type: 'custom',
@@ -588,12 +788,25 @@ const locations = [
         handleClick: (setCurrentLocation) => setCurrentLocation(1)
       },
       {
-        // New hotspot: from Auditorium External View to Faculty and Girls Cafe
         yaw: -49.62,
         pitch: -0.28,
         type: 'custom',
         text: 'Go to Faculty and Girls Cafe',
         handleClick: (setCurrentLocation) => setCurrentLocation(10)
+      },
+      {
+        yaw: -56.84,
+        pitch: 7.60,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Main entrance to the auditorium.'
+      },
+      {
+        yaw: -48.42,
+        pitch: 8.09,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Entrance to the Faculty and Girls’ Café.'
       }
     ]
   },
@@ -604,7 +817,6 @@ const locations = [
     info: 'This view shows the classroom.',
     hotSpots: [
       {
-        // In Classroom, tap to return to Atrium
         yaw: -107.82,
         pitch: -7.50,
         type: 'custom',
@@ -618,40 +830,72 @@ const locations = [
     title: 'Main Entrance',
     image: `${process.env.PUBLIC_URL}/images/main_entrance.jpg`,
     info: 'This view shows the main entrance.',
-    hotSpots:
-    [
+    hotSpots: [
       {
         yaw: -1.35,
         pitch: 0.62,
         type: 'custom',
         text: 'Go to Main walkway',
         handleClick: (setCurrentLocation) => setCurrentLocation(2)
+      },
+      {
+        yaw: -16.51,
+        pitch: 1.40,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'NUtech Entrance: Students must present their student ID for verification.'
+      },
+      {
+        yaw: 40.15,
+        pitch: 0.50,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'CTTI Entrance: Access for CTTI students upon student ID verification.'
+      },
+      {
+        yaw: 99.25,
+        pitch: 2.76,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Designated student parking area.'
+      },
+      {
+        yaw: -87.97,
+        pitch: -0.85,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Vehicle checkpost for security inspection.'
+      },
+      {
+        yaw: -130.38,
+        pitch: -2.66,
+        type: 'info',
+        cssClass: 'info-hotspot',
+        text: 'Main IJP Road, Islamabad.'
       }
     ]
   }
 ];
 
 const TourView = () => {
-  // Set initial state to index 13 (Main Entrance)
-  const [currentLocation, setCurrentLocation] = useState(13);
+  const [currentLocation, setCurrentLocation] = useState(13); // Start at Main Entrance
+  const [visitHistory, setVisitHistory] = useState([13]); // Track visited locations
   const [isLoading, setIsLoading] = useState(true);
-  const [modalInfo, setModalInfo] = useState({ show: false, title: '', message: '' });
+  const [modalInfo, setModalInfo] = useState({ $show: false, title: '', message: '' });
   const [showAllViews, setShowAllViews] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  // Tutorial state: whether to show and which step is current
   const [showTutorial, setShowTutorial] = useState(true);
   const [tutorialStep, setTutorialStep] = useState(0);
   const panImageRef = useRef(null);
 
-  // Array of tutorial steps
   const tutorialSteps = [
     {
       title: 'Hotspots',
-      content: 'Click on hotspots within the panorama to learn more about the area.'
+      content: 'Click navigation hotspots to move, or hover over info hotspots for details.'
     },
     {
       title: 'Navigation',
-      content: 'Use the Previous and Next buttons to move between locations.'
+      content: 'Use the Previous Location button to go back to the last place you visited.'
     },
     {
       title: 'All Views',
@@ -663,11 +907,10 @@ const TourView = () => {
     },
     {
       title: 'Home',
-      content: 'Click Home at any time to return to the starting view.'
+      content: 'Click Home to return to the starting view.'
     }
   ];
 
-  // Listen for fullscreen change events so we can update the button text
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -678,16 +921,52 @@ const TourView = () => {
     };
   }, []);
 
-  // Get current location data
+  useEffect(() => {
+    console.log('Current Location:', currentLocation);
+    console.log('Visit History:', visitHistory);
+  }, [currentLocation, visitHistory]);
+
   const currentData = locations[currentLocation];
 
-  // Navigation handlers
-  const goToPreviousLocation = () =>
-    setCurrentLocation((prev) => (prev - 1 + locations.length) % locations.length);
-  const goToNextLocation = () =>
-    setCurrentLocation((prev) => (prev + 1) % locations.length);
+  const handleHotspotClick = (hotspot) => {
+    if (hotspot.handleClick) {
+      const previousLocation = currentLocation;
+      console.log('Before Click - Current:', previousLocation, 'History:', visitHistory);
+      
+      // Update the current location without modifying history here
+      // The history will be updated by the useEffect below
+      hotspot.handleClick(setCurrentLocation);
+    }
+  };
 
-  // Toggle fullscreen mode using the Fullscreen API
+  // Add a useEffect to track location changes
+  useEffect(() => {
+    // Skip on initial render
+    if (visitHistory.length === 1 && visitHistory[0] === currentLocation) {
+      return;
+    }
+    
+    // If the current location is different from the last one in history, add it
+    if (visitHistory[visitHistory.length - 1] !== currentLocation) {
+      console.log('Location changed, updating history:', [...visitHistory, currentLocation]);
+      setVisitHistory(prevHistory => [...prevHistory, currentLocation]);
+    }
+  }, [currentLocation, visitHistory]);
+
+  const goToPreviousLocation = () => {
+    if (visitHistory.length > 1) {
+      const newHistory = [...visitHistory];
+      newHistory.pop(); // Remove the current location
+      const previousLocation = newHistory[newHistory.length - 1];
+      console.log('Going to Previous Location:', previousLocation, 'New History:', newHistory);
+      
+      // Set the new location without modifying history here
+      setCurrentLocation(previousLocation);
+      // Update history directly
+      setVisitHistory(newHistory);
+    }
+  };
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
@@ -696,25 +975,14 @@ const TourView = () => {
     }
   };
 
-  // Called when the panorama has fully loaded
   const handlePanoramaLoad = () => {
     setIsLoading(false);
   };
 
-  // Default handler for hotspots without a custom action: display modal
-  const handleHotspotInfo = (hotspot) => {
-    setModalInfo({
-      show: true,
-      title: hotspot.text,
-      message: `Detailed information about ${currentData.title}.`
-    });
-  };
-
   const closeModal = () => {
-    setModalInfo({ show: false, title: '', message: '' });
+    setModalInfo({ $show: false, title: '', message: '' });
   };
 
-  // Handler for progressing the tutorial
   const handleTutorialNext = () => {
     if (tutorialStep < tutorialSteps.length - 1) {
       setTutorialStep(tutorialStep + 1);
@@ -723,34 +991,30 @@ const TourView = () => {
     }
   };
 
-  // Calculate progress percentage for the progress bar
   const progressPercent = ((tutorialStep + 1) / tutorialSteps.length) * 100;
 
   return (
     <ViewerContainer>
-      {/* Loading overlay with spinner */}
-      <LoadingOverlay isLoading={isLoading}>
+      <LoadingOverlay $isLoading={isLoading}>
         <Spinner />
       </LoadingOverlay>
 
-      {/* Fullscreen toggle button */}
       <FullscreenButton onClick={toggleFullscreen}>
         {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
       </FullscreenButton>
 
-      {/* Home button */}
-      <HomeButton onClick={() => setCurrentLocation(13)}>Home</HomeButton>
+      <HomeButton onClick={() => {
+        setCurrentLocation(13);
+        setVisitHistory([13]); // Reset history to just Main Entrance
+      }}>Home</HomeButton>
 
-      {/* All Views button */}
       <AllViewsButton onClick={() => setShowAllViews(true)}>All Views</AllViewsButton>
 
-      {/* Location information box */}
       <LocationInfo>
         <h3>{currentData.title}</h3>
         <p>{currentData.info}</p>
       </LocationInfo>
 
-      {/* 360° Panorama Viewer with autorotate active and centered view */}
       <Pannellum
         width="100%"
         height="100vh"
@@ -762,8 +1026,8 @@ const TourView = () => {
         ref={panImageRef}
         autoLoad
         onLoad={handlePanoramaLoad}
+        hotspotDebug={false}
       >
-        {/* Render only non-fixed hotspots inside the panorama */}
         {currentData.hotSpots
           .filter((hotspot) => !hotspot.fixed)
           .map((hotspot, index) => (
@@ -773,49 +1037,37 @@ const TourView = () => {
               pitch={hotspot.pitch}
               yaw={hotspot.yaw}
               text={hotspot.text}
-              handleClick={() => {
-                if (hotspot.handleClick) {
-                  hotspot.handleClick(setCurrentLocation);
-                } else {
-                  handleHotspotInfo(hotspot);
-                }
-              }}
+              cssClass={hotspot.cssClass || 'custom-hotspot'}
+              handleClick={hotspot.handleClick ? () => handleHotspotClick(hotspot) : null}
             />
           ))}
       </Pannellum>
 
-      {/* Render fixed hotspots (they will remain at the defined position regardless of panorama rotation) */}
       {currentData.hotSpots
         .filter((hotspot) => hotspot.fixed)
         .map((hotspot, index) => (
           <FixedHotspot
             key={index}
-            onClick={() => {
-              hotspot.handleClick(setCurrentLocation);
-            }}
+            onClick={() => handleHotspotClick(hotspot)}
           >
             {hotspot.text}
           </FixedHotspot>
         ))}
 
-      {/* External Navigation Buttons */}
-      {locations.length > 1 && (
-        <NavButtonContainer>
-          <NavigationButton onClick={goToPreviousLocation}>Previous Location</NavigationButton>
-          <NavigationButton onClick={goToNextLocation}>Next Location</NavigationButton>
-        </NavButtonContainer>
-      )}
+      <NavButtonContainer>
+        <NavigationButton onClick={goToPreviousLocation} disabled={visitHistory.length <= 1}>
+          Previous Location
+        </NavigationButton>
+      </NavButtonContainer>
 
-      {/* Info Modal for Hotspots */}
       <InfoModal
-        show={modalInfo.show}
+        $show={modalInfo.$show}
         onClose={closeModal}
         title={modalInfo.title}
         message={modalInfo.message}
       />
 
-      {/* All Views Modal with Thumbnails */}
-      <ModalOverlay show={showAllViews}>
+      <ModalOverlay $show={showAllViews}>
         <ViewsModalContent>
           <h3>Select a View</h3>
           <ViewGrid>
@@ -823,7 +1075,11 @@ const TourView = () => {
               <ViewCard
                 key={loc.id}
                 onClick={() => {
-                  setCurrentLocation(index);
+                  if (index !== currentLocation) {
+                    // Just update the current location
+                    // The history will be updated by the useEffect
+                    setCurrentLocation(index);
+                  }
                   setShowAllViews(false);
                 }}
               >
@@ -836,15 +1092,14 @@ const TourView = () => {
         </ViewsModalContent>
       </ModalOverlay>
 
-      {/* Step-by-Step Tutorial Overlay */}
       {showTutorial && (
-        <ModalOverlay show={showTutorial}>
+        <ModalOverlay $show={showTutorial}>
           <TutorialContent>
             <h3>
               Step {tutorialStep + 1} of {tutorialSteps.length}: {tutorialSteps[tutorialStep].title}
             </h3>
             <ProgressBarContainer>
-              <ProgressBarFill progress={progressPercent} />
+              <ProgressBarFill $progress={progressPercent} />
             </ProgressBarContainer>
             <p>{tutorialSteps[tutorialStep].content}</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
@@ -856,6 +1111,34 @@ const TourView = () => {
           </TutorialContent>
         </ModalOverlay>
       )}
+
+      {/* Add CSS for hotspots */}
+      <style>
+        {`
+          .pnlm-hotspot.custom-hotspot {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+          .pnlm-hotspot.info-hotspot {
+            background-color: #00f;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: default;
+          }
+          .pnlm-hotspot.info-hotspot .pnlm-tooltip {
+            background-color: rgba(0, 0, 255, 0.8);
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            max-width: 200px;
+            white-space: normal;
+          }
+        `}
+      </style>
     </ViewerContainer>
   );
 };
