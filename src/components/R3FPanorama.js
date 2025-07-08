@@ -104,8 +104,8 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
   const startHotspotStyle = {
     ...baseStyle,
     background: 'transparent', // No background
-    color: '#FFD700', // Gold/yellow color like road paint
-    fontSize: '32px',
+    color: '#ffffff', // Gold/yellow color like road paint
+    fontSize: '60px',
     fontWeight: '900',
     border: 'none', // No border
     width: '120px',
@@ -114,6 +114,21 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     boxShadow: 'none', // No shadows
     textShadow: 'none', // No text shadow
     fontFamily: 'Arial Black, sans-serif', // Bold, simple font
+  };
+
+  const arrowHotspotStyle = {
+    ...baseStyle,
+    background: 'transparent', // No background
+    color: '#ffffff', // White color like the START text
+    fontSize: '48px',
+    fontWeight: '900',
+    border: 'none', // No border
+    width: '60px',
+    height: '50px',
+    borderRadius: '0', // No rounded corners
+    boxShadow: 'none', // No shadows
+    textShadow: 'none', // No text shadow
+    fontFamily: 'Arial, sans-serif', // Simple font for arrow
   };
   
   const tooltipStyle = {
@@ -153,8 +168,15 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     currentStyle = startHotspotStyle;
     content = text; // Display the "START" text directly
     hoverEffectStyle = { 
-      color: '#FFF700', // Slightly brighter yellow on hover
+      color: '#ffffff', // Slightly brighter yellow on hover
       transform: 'scale(1.05)'
+    };
+  } else if (type === 'arrow') {
+    currentStyle = arrowHotspotStyle;
+    content = text; // Display the arrow directly
+    hoverEffectStyle = { 
+      color: '#cccccc', // Slightly dimmer white on hover
+      transform: 'scale(1.1)'
     };
   }
 
@@ -171,7 +193,7 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
           onPointerOut={handlePointerOut}
         >
           {content}
-          {type !== 'start' && (
+          {type !== 'start' && type !== 'arrow' && (
             <div style={tooltipStyle}>
               {text}
             </div>
