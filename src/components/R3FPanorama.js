@@ -104,8 +104,8 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
   const startHotspotStyle = {
     ...baseStyle,
     background: 'transparent', // No background
-    color: '#ffffff', // Gold/yellow color like road paint
-    fontSize: '60px',
+    color: '#ffffff',
+    fontSize: '48px', // Reduced size to match arrow better
     fontWeight: '900',
     border: 'none', // No border
     width: '120px',
@@ -113,7 +113,14 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     borderRadius: '0', // No rounded corners
     boxShadow: 'none', // No shadows
     textShadow: 'none', // No text shadow
-    fontFamily: 'Arial Black, sans-serif', // Bold, simple font
+    fontFamily: 'Arial, sans-serif', // Same font family as arrow for consistency
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textAlign: 'center',
   };
 
   const arrowHotspotStyle = {
@@ -129,6 +136,13 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     boxShadow: 'none', // No shadows
     textShadow: 'none', // No text shadow
     fontFamily: 'Arial, sans-serif', // Simple font for arrow
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textAlign: 'center',
   };
   
   const tooltipStyle = {
