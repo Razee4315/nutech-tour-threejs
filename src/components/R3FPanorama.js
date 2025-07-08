@@ -214,6 +214,7 @@ const R3FPanorama = ({
   hotSpots = [],
   onHotspotClick,
   onLoad,
+  showHotspots = true,
 }) => {
   const controlsRef = useRef();
 
@@ -246,7 +247,7 @@ const R3FPanorama = ({
         target={[0,0,0]}
       />
       <PanoramaSphere image={image} onLoad={onLoad} autoRotate={autoRotate} autoRotateSpeed={autoRotateSpeed} />
-      {hotSpots.map((spot, index) => (
+      {showHotspots && hotSpots.map((spot, index) => (
         <Hotspot
           key={spot.id || spot.yaw || spot.pitch || index} 
           spot={spot}

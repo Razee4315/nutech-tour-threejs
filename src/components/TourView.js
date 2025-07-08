@@ -609,7 +609,7 @@ const locations = [
         yaw: 63.72,
         pitch: 6.50,
         type: 'info',
-        text: 'NSDD Office Block'
+        text: 'Khalid Office Block'
       },
       {
         yaw: -129.24,
@@ -723,12 +723,7 @@ const locations = [
         type: 'info',
         text: 'Friendship Park: A recreational space for students.'
       },
-      {
-        yaw: 2.46,
-        pitch: 3.97,
-        type: 'info',
-        text: 'Flag Area: Displays flags of NUtech and its departments.'
-      }
+      
     ]
   },
   {
@@ -806,7 +801,7 @@ const locations = [
         yaw: 115.37,
         pitch: 0.43,
         type: 'info',
-        text: 'NSDD: Under development for future expansion.'
+        text: 'Khalid Block: Under development for future expansion.'
       }
     ]
   },
@@ -882,12 +877,6 @@ const locations = [
         pitch: -5.24,
         type: 'info',
         text: 'Student Facilitation Desk: Provides information and support for students.'
-      },
-      {
-        yaw: 0.72,
-        pitch: -2.09,
-        type: 'info',
-        text: 'Lift: Access to all floors of the Academic Block.'
       },
       {
         yaw: 24.18,
@@ -1294,10 +1283,11 @@ const TourView = () => {
           hotSpots={currentData.hotSpots.filter((hotspot) => !hotspot.fixed)}
           onHotspotClick={handleHotspotClick}
           onLoad={handlePanoramaLoad}
+          showHotspots={!showAllViewsHover}
         />
       )}
 
-      {currentData.hotSpots
+      {!showAllViewsHover && currentData.hotSpots
         .filter((hotspot) => hotspot.fixed)
         .map((hotspot, index) => (
           <FixedHotspot
