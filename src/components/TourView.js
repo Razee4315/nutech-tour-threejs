@@ -164,6 +164,39 @@ const FullMapButton = styled.button`
 `;
 
 /* ----------------------------------
+   Fixed START and Arrow overlays for Main Entrance
+------------------------------------- */
+const StartTextOverlay = styled.div`
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 60px;
+  font-weight: 900;
+  font-family: Arial Black, sans-serif;
+  z-index: 1500;
+  pointer-events: none;
+  text-align: center;
+  user-select: none;
+`;
+
+const ArrowOverlay = styled.div`
+  position: absolute;
+  bottom: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: 900;
+  font-family: Arial, sans-serif;
+  z-index: 1500;
+  pointer-events: none;
+  text-align: center;
+  user-select: none;
+`;
+
+/* ----------------------------------
    Glassmorphism style for buttons (text color updated to black)
 ------------------------------------- */
 const GlassButton = styled.button`
@@ -1084,18 +1117,6 @@ const locations = [
         pitch: -2.66,
         type: 'info',
         text: 'Main IJP Road, Islamabad.'
-      },
-      {
-        yaw: -2.26,
-        pitch: -13.82,
-        type: 'start',
-        text: 'START'
-      },
-      {
-        yaw: 25.0,
-        pitch: -13.82,
-        type: 'arrow',
-        text: '→'
       }
     ]
   }
@@ -1341,6 +1362,14 @@ const TourView = () => {
             </div>
           </TutorialContent>
         </ModalOverlay>
+      )}
+
+      {/* Fixed START and Arrow overlays for Main Entrance */}
+      {currentLocation === 13 && (
+        <>
+          <StartTextOverlay>START</StartTextOverlay>
+          <ArrowOverlay>↑</ArrowOverlay>
+        </>
       )}
 
       <style>
