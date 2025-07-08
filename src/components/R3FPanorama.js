@@ -100,6 +100,20 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     width: '32px', // Reset size if different from custom
     height: '32px',
   };
+
+  const startHotspotStyle = {
+    ...baseStyle,
+    background: 'rgba(255, 0, 0, 0.9)', // Bright red background
+    color: 'white',
+    fontSize: '28px',
+    fontWeight: '900',
+    border: '3px solid rgba(255, 255, 255, 0.8)',
+    width: '120px', // Much larger for prominence
+    height: '50px',
+    borderRadius: '25px', // Rounded rectangle instead of circle
+    boxShadow: '0 4px 15px rgba(255, 0, 0, 0.4)',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+  };
   
   const tooltipStyle = {
     position: 'absolute',
@@ -134,6 +148,14 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     currentStyle = customHotspotStyle;
     content = <img src={iconPath} alt={text || 'Navigate'} style={{ width: '100%', height: '100%' }} />;
     hoverEffectStyle = { transform: 'scale(1.1)' }; // Scale up image on hover
+  } else if (type === 'start') {
+    currentStyle = startHotspotStyle;
+    content = text; // Display the "START" text directly
+    hoverEffectStyle = { 
+      backgroundColor: 'rgba(255, 50, 50, 1)', 
+      transform: 'scale(1.05)',
+      boxShadow: '0 6px 20px rgba(255, 0, 0, 0.6)'
+    };
   }
 
   const elementId = `hotspot-${type}-${spot.id || spot.yaw || spot.pitch}`;
@@ -149,9 +171,11 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
           onPointerOut={handlePointerOut}
         >
           {content}
-          <div style={tooltipStyle}>
-            {text}
-          </div>
+          {type !== 'start' && (
+            <div style={tooltipStyle}>
+              {text}
+            </div>
+          )}
         </div>
       </Html>
     </group>

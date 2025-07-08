@@ -1084,6 +1084,12 @@ const locations = [
         pitch: -2.66,
         type: 'info',
         text: 'Main IJP Road, Islamabad.'
+      },
+      {
+        yaw: -120.0,
+        pitch: -8.0,
+        type: 'start',
+        text: 'START'
       }
     ]
   }
