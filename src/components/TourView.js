@@ -140,11 +140,6 @@ const MarkerTooltip = styled.div`
   }
 `;
 
-const PlaceholderText = styled.div`
-  padding: 20px;
-  text-align: center;
-`;
-
 /* ----------------------------------
    Glassmorphism style for buttons (text color updated to black)
 ------------------------------------- */
