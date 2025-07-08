@@ -103,16 +103,17 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
 
   const startHotspotStyle = {
     ...baseStyle,
-    background: 'rgba(255, 0, 0, 0.9)', // Bright red background
-    color: 'white',
-    fontSize: '28px',
+    background: 'transparent', // No background
+    color: '#FFD700', // Gold/yellow color like road paint
+    fontSize: '32px',
     fontWeight: '900',
-    border: '3px solid rgba(255, 255, 255, 0.8)',
-    width: '120px', // Much larger for prominence
+    border: 'none', // No border
+    width: '120px',
     height: '50px',
-    borderRadius: '25px', // Rounded rectangle instead of circle
-    boxShadow: '0 4px 15px rgba(255, 0, 0, 0.4)',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+    borderRadius: '0', // No rounded corners
+    boxShadow: 'none', // No shadows
+    textShadow: 'none', // No text shadow
+    fontFamily: 'Arial Black, sans-serif', // Bold, simple font
   };
   
   const tooltipStyle = {
@@ -152,9 +153,8 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     currentStyle = startHotspotStyle;
     content = text; // Display the "START" text directly
     hoverEffectStyle = { 
-      backgroundColor: 'rgba(255, 50, 50, 1)', 
-      transform: 'scale(1.05)',
-      boxShadow: '0 6px 20px rgba(255, 0, 0, 0.6)'
+      color: '#FFF700', // Slightly brighter yellow on hover
+      transform: 'scale(1.05)'
     };
   }
 
