@@ -100,6 +100,36 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     width: '32px', // Reset size if different from custom
     height: '32px',
   };
+
+  const startHotspotStyle = {
+    ...baseStyle,
+    background: 'transparent', // No background
+    color: '#ffffff', // Gold/yellow color like road paint
+    fontSize: '60px',
+    fontWeight: '900',
+    border: 'none', // No border
+    width: '120px',
+    height: '50px',
+    borderRadius: '0', // No rounded corners
+    boxShadow: 'none', // No shadows
+    textShadow: 'none', // No text shadow
+    fontFamily: 'Arial Black, sans-serif', // Bold, simple font
+  };
+
+  const arrowHotspotStyle = {
+    ...baseStyle,
+    background: 'transparent', // No background
+    color: '#ffffff', // White color like the START text
+    fontSize: '48px',
+    fontWeight: '900',
+    border: 'none', // No border
+    width: '60px',
+    height: '50px',
+    borderRadius: '0', // No rounded corners
+    boxShadow: 'none', // No shadows
+    textShadow: 'none', // No text shadow
+    fontFamily: 'Arial, sans-serif', // Simple font for arrow
+  };
   
   const tooltipStyle = {
     position: 'absolute',
@@ -134,6 +164,20 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     currentStyle = customHotspotStyle;
     content = <img src={iconPath} alt={text || 'Navigate'} style={{ width: '100%', height: '100%' }} />;
     hoverEffectStyle = { transform: 'scale(1.1)' }; // Scale up image on hover
+  } else if (type === 'start') {
+    currentStyle = startHotspotStyle;
+    content = text; // Display the "START" text directly
+    hoverEffectStyle = { 
+      color: '#ffffff', // Slightly brighter yellow on hover
+      transform: 'scale(1.05)'
+    };
+  } else if (type === 'arrow') {
+    currentStyle = arrowHotspotStyle;
+    content = text; // Display the arrow directly
+    hoverEffectStyle = { 
+      color: '#cccccc', // Slightly dimmer white on hover
+      transform: 'scale(1.1)'
+    };
   }
 
   const elementId = `hotspot-${type}-${spot.id || spot.yaw || spot.pitch}`;
@@ -149,9 +193,11 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
           onPointerOut={handlePointerOut}
         >
           {content}
-          <div style={tooltipStyle}>
-            {text}
-          </div>
+          {type !== 'start' && type !== 'arrow' && (
+            <div style={tooltipStyle}>
+              {text}
+            </div>
+          )}
         </div>
       </Html>
     </group>
