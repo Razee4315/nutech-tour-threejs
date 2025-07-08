@@ -21,20 +21,128 @@ const ViewerContainer = styled.div`
 `;
 
 /* ----------------------------------
-   Improved Location Info Box
+   Satellite Map Component - replaces Location Info Box
 ------------------------------------- */
-const LocationInfo = styled.div`
+const SatelliteMapContainer = styled.div`
   position: absolute;
   top: 20px;
   left: 40px;
+  width: 350px;
+  height: 280px;
   background-color: rgba(20, 20, 20, 0.85);
-  color: #fff;
-  padding: 20px 28px;
   border-radius: 10px;
   z-index: 1000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  max-width: 350px;
+  overflow: hidden;
+`;
+
+const MapHeader = styled.div`
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 12px 20px;
   font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+`;
+
+const MapImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.4;
+`;
+
+const SatelliteImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+`;
+
+const LocationMarker = styled.button`
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: #ff4444;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  
+  &:hover {
+    transform: scale(1.4);
+    background-color: #ff6666;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  &.current {
+    background-color: #44ff44;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #fff;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(68, 255, 68, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(68, 255, 68, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(68, 255, 68, 0);
+    }
+  }
+`;
+
+const MarkerTooltip = styled.div`
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  
+  ${LocationMarker}:hover & {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+  }
+`;
+
+const PlaceholderText = styled.div`
+  padding: 20px;
+  text-align: center;
 `;
 
 /* ----------------------------------
@@ -83,13 +191,17 @@ const HomeButton = styled(GlassButton)`
 `;
 
 /* ----------------------------------
-   All Views button positioned at bottom right
+   All Views button positioned at bottom right with hover container
 ------------------------------------- */
-const AllViewsButton = styled(GlassButton)`
+const AllViewsContainer = styled.div`
   position: absolute;
   bottom: 20px;
   right: 20px;
   z-index: 1100;
+`;
+
+const AllViewsButton = styled(GlassButton)`
+  position: relative;
 `;
 
 /* ----------------------------------
@@ -194,12 +306,49 @@ const ModalCloseButton = styled(GlassButton)`
 `;
 
 /* ----------------------------------
-   Container for the "All Views" modal content
+   Container for the "All Views" hover dropdown - glassmorphism theme
 ------------------------------------- */
-const ViewsModalContent = styled(ModalContent)`
-  max-height: 80vh;
+const ViewsHoverDropdown = styled.div`
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  width: 450px;
+  max-height: 70vh;
   overflow-y: auto;
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
+  transform: ${({ $show }) => ($show ? 'translateY(0)' : 'translateY(10px)')};
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    border: 8px solid transparent;
+    border-top-color: rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #000;
+  }
 `;
+
+/* ----------------------------------
+   Removed ViewsModalContent - now using ViewsHoverDropdown
+------------------------------------- */
 
 /* ----------------------------------
    Grid container for view cards
@@ -208,8 +357,8 @@ const ViewGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 18px;
+  margin-top: 15px;
 `;
 
 /* ----------------------------------
@@ -218,16 +367,16 @@ const ViewGrid = styled.div`
 const ViewCard = styled.div`
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 16px;
+  border-radius: 12px;
   backdrop-filter: blur(8px);
   overflow: hidden;
   width: 150px;
   cursor: pointer;
   transition: transform 0.3s ease, background 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    transform: translateY(-3px) scale(1.05);
+    transform: translateY(-2px) scale(1.03);
     background: rgba(255, 255, 255, 0.25);
   }
 `;
@@ -239,16 +388,19 @@ const Thumbnail = styled.img`
   width: 100%;
   height: 100px;
   object-fit: cover;
+  border-radius: 8px 8px 0 0;
 `;
 
 /* ----------------------------------
    Card title styling for each view card
 ------------------------------------- */
 const CardTitle = styled.div`
-  padding: 8px;
+  padding: 6px 8px;
   color: #000;
   font-weight: 600;
+  font-size: 11px;
   text-align: center;
+  background: rgba(255, 255, 255, 0.1);
 `;
 
 /* ----------------------------------
@@ -301,7 +453,83 @@ const InfoModal = ({ $show, onClose, title, message }) => (
       <ModalCloseButton onClick={onClose}>Close</ModalCloseButton>
     </ModalContent>
   </ModalOverlay>
-);
+  );
+
+/* ----------------------------------
+   Satellite Map Component for location navigation
+------------------------------------- */
+const SatelliteMapComponent = ({ currentLocation, locations, onLocationChange }) => {
+  // Define accurate positions for each location based on the satellite image
+  // These positions are percentages (0-100) from top-left corner
+  const locationPositions = {
+    0: { top: 45, left: 25 },   // Academic Block (main building complex)
+    1: { top: 60, left: 35 },   // Campus Pathway (pathway between buildings)
+    2: { top: 75, left: 45 },   // Main Walkway (central walkway)
+    3: { top: 35, left: 20 },   // Admin Block (upper left building)
+    4: { top: 30, left: 45 },   // Campus Viewpoint (upper central area)
+    5: { top: 65, left: 25 },   // Admin Pathway (pathway to admin)
+    6: { top: 50, left: 30 },   // Atrium (central building area)
+    7: { top: 40, left: 35 },   // Computer Lab (inside academic building)
+    8: { top: 45, left: 32 },   // Library First Floor (library building)
+    9: { top: 42, left: 32 },   // Library Second Floor (library building upper)
+    10: { top: 55, left: 65 },  // Faculty and Girls Cafe (right side building)
+    11: { top: 50, left: 70 },  // Auditorium External View (rightmost building)
+    12: { top: 48, left: 28 },  // Classroom (academic building area)
+    13: { top: 85, left: 50 }   // Main Entrance (bottom entrance from main road)
+  };
+
+  return (
+    <SatelliteMapContainer>
+      <MapHeader>
+        University Campus Map
+      </MapHeader>
+      <MapImageContainer>
+        {/* Real satellite image of NUTECH campus */}
+        <SatelliteImage 
+          src={`${process.env.PUBLIC_URL}/images/satellite_img.png`} 
+          alt="NUTECH University Campus Satellite View" 
+          onError={(e) => {
+            // Fallback to placeholder text if image fails to load
+            e.target.style.display = 'none';
+            e.target.parentNode.innerHTML = `
+              <div style="padding: 20px; text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 14px; line-height: 1.4;">
+                📍 Interactive Campus Map<br/>
+                <small>Click markers to navigate</small><br/>
+                <small style="color: #aaa; font-size: 11px;">
+                  Loading satellite image...<br/>
+                  ${locations[currentLocation]?.title}
+                </small>
+              </div>
+            `;
+          }}
+        />
+        
+        {/* Render location markers */}
+        {locations.map((location, index) => {
+          const position = locationPositions[index] || { top: 50, left: 50 };
+          const isCurrentLocation = index === currentLocation;
+          
+          return (
+            <LocationMarker
+              key={location.id}
+              className={isCurrentLocation ? 'current' : ''}
+              style={{
+                top: `${position.top}%`,
+                left: `${position.left}%`
+              }}
+              onClick={() => onLocationChange(index)}
+            >
+              <MarkerTooltip>
+                {location.title}
+                {isCurrentLocation && ' (Current)'}
+              </MarkerTooltip>
+            </LocationMarker>
+          );
+        })}
+      </MapImageContainer>
+    </SatelliteMapContainer>
+  );
+};
 
 /* ----------------------------------
    Tour location data and hotspot configuration
@@ -841,7 +1069,8 @@ const TourView = () => {
   const [visitHistory, setVisitHistory] = useState([13]); // Track visited locations
   const [isLoading, setIsLoading] = useState(true);
   const [modalInfo, setModalInfo] = useState({ $show: false, title: '', message: '' });
-  const [showAllViews, setShowAllViews] = useState(false);
+  const [showAllViewsHover, setShowAllViewsHover] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showTutorial, setShowTutorial] = useState(true);
   const [tutorialStep, setTutorialStep] = useState(0);
@@ -905,6 +1134,15 @@ const TourView = () => {
     }
   }, [currentLocation, visitHistory]);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
   const goToPreviousLocation = () => {
     if (visitHistory.length > 1) {
       const newHistory = [...visitHistory];
@@ -943,6 +1181,22 @@ const TourView = () => {
 
   const progressPercent = ((tutorialStep + 1) / tutorialSteps.length) * 100;
 
+  // Handle hover with smooth delay
+  const handleAllViewsEnter = () => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    setShowAllViewsHover(true);
+  };
+
+  const handleAllViewsLeave = () => {
+    const timeout = setTimeout(() => {
+      setShowAllViewsHover(false);
+    }, 200); // Small delay to allow mouse movement to dropdown
+    setHoverTimeout(timeout);
+  };
+
   return (
     <ViewerContainer>
       <LoadingOverlay $isLoading={isLoading}>
@@ -958,12 +1212,38 @@ const TourView = () => {
         setVisitHistory([13]);
       }}>Home</HomeButton>
 
-      <AllViewsButton onClick={() => setShowAllViews(true)}>All Views</AllViewsButton>
+      <AllViewsContainer
+        onMouseEnter={handleAllViewsEnter}
+        onMouseLeave={handleAllViewsLeave}
+      >
+        <AllViewsButton>All Views</AllViewsButton>
+        <ViewsHoverDropdown $show={showAllViewsHover}>
+          <h3>Quick View Selection</h3>
+          <ViewGrid>
+            {locations.map((loc, index) => (
+              <ViewCard
+                key={loc.id}
+                onClick={() => {
+                  if (index !== currentLocation) {
+                    setCurrentLocation(index);
+                  }
+                  setShowAllViewsHover(false);
+                }}
+              >
+                <Thumbnail src={loc.image} alt={loc.title} />
+                <CardTitle>{loc.title}</CardTitle>
+              </ViewCard>
+            ))}
+          </ViewGrid>
+        </ViewsHoverDropdown>
+      </AllViewsContainer>
 
-      <LocationInfo>
-        <h3>{currentData.title}</h3>
-        <p>{currentData.info}</p>
-      </LocationInfo>
+             {/* Interactive Satellite Map Component */}
+       <SatelliteMapComponent 
+         currentLocation={currentLocation} 
+         locations={locations}
+         onLocationChange={setCurrentLocation}
+       />
 
       {currentData && currentData.image && (
         <R3FPanorama
@@ -1004,28 +1284,7 @@ const TourView = () => {
         message={modalInfo.message}
       />
 
-      <ModalOverlay $show={showAllViews}>
-        <ViewsModalContent>
-          <h3>Select a View</h3>
-          <ViewGrid>
-            {locations.map((loc, index) => (
-              <ViewCard
-                key={loc.id}
-                onClick={() => {
-                  if (index !== currentLocation) {
-                    setCurrentLocation(index);
-                  }
-                  setShowAllViews(false);
-                }}
-              >
-                <Thumbnail src={loc.image} alt={loc.title} />
-                <CardTitle>{loc.title}</CardTitle>
-              </ViewCard>
-            ))}
-          </ViewGrid>
-          <ModalCloseButton onClick={() => setShowAllViews(false)}>Close</ModalCloseButton>
-        </ViewsModalContent>
-      </ModalOverlay>
+      {/* Removed old modal - now using hover dropdown */}
 
       {showTutorial && (
         <ModalOverlay $show={showTutorial}>
