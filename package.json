@@ -2,7 +2,7 @@
   "name": "nutech-tour",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Razee4315.github.io/nutech-tour",
+  "homepage": "https://Razee4315.github.io/nutech-tour-threejs",
   "dependencies": {
     "@react-three/drei": "^10.0.8",
     "@react-three/fiber": "^9.1.2",
