@@ -140,6 +140,29 @@ const MarkerTooltip = styled.div`
   }
 `;
 
+const FullMapButton = styled.button`
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 15;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.85);
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  }
+`;
+
 /* ----------------------------------
    Glassmorphism style for buttons (text color updated to black)
 ------------------------------------- */
@@ -521,6 +544,13 @@ const SatelliteMapComponent = ({ currentLocation, locations, onLocationChange })
             </LocationMarker>
           );
         })}
+        
+        {/* Full Map button */}
+        <FullMapButton 
+          onClick={() => window.open('https://earth.google.com/web/search/NUTECH+University+Islamabad,+Karnal+Sher+Khan+Shaheed+Road,+I-12,+Islamabad/@33.6258115,73.0115244,522.55728268a,689.68427761d,35y,318.55494546h,0t,0r/data=CnMaRRI_CiUweDM4ZGY5NTYxYTMwNmMwYzU6MHg5OWFkNGYwNDIwMTM3ZTg3KhZOYXRpb25hbCBVbml2ZXJzaXR5IG9mGAIgASImCiQJt9AhbOrPQEAREkxPEATPQEAZRfvRtlpBUkAhTBm_qjpAUkBCAggBOgMKATBCAggASg0I____________ARAA?authuser=0', '_blank')}
+        >
+          Full Map
+        </FullMapButton>
       </MapImageContainer>
     </SatelliteMapContainer>
   );
