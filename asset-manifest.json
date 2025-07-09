@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/nutech-tour-threejs/static/css/main.de4b891c.css",
+    "main.js": "/nutech-tour-threejs/static/js/main.d932484d.js",
+    "index.html": "/nutech-tour-threejs/index.html",
+    "main.de4b891c.css.map": "/nutech-tour-threejs/static/css/main.de4b891c.css.map",
+    "main.d932484d.js.map": "/nutech-tour-threejs/static/js/main.d932484d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.de4b891c.css",
+    "static/js/main.d932484d.js"
+  ]
+}
