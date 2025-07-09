@@ -19,14 +19,55 @@ const sphericalToCartesian = (pitchPannellum, yawPannellum, radius) => {
 };
 
 const PanoramaSphere = ({ image, onLoad, autoRotate, autoRotateSpeed }) => {
-  const texture = useLoader(THREE.TextureLoader, image);
   const meshRef = useRef();
+  const materialRef = useRef();
+  const [texture, setTexture] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load texture when image changes
   useEffect(() => {
-    if (texture && onLoad) {
-      onLoad();
+    setIsLoading(true);
+    const loader = new THREE.TextureLoader();
+    let currentTexture = null;
+    
+    loader.load(
+      image,
+      (loadedTexture) => {
+        currentTexture = loadedTexture;
+        setTexture(prevTexture => {
+          // Dispose of old texture to prevent memory leaks
+          if (prevTexture) {
+            prevTexture.dispose();
+          }
+          return loadedTexture;
+        });
+        setIsLoading(false);
+        if (onLoad) {
+          onLoad();
+        }
+      },
+      undefined,
+      (error) => {
+        console.error('Failed to load texture:', error);
+        setIsLoading(false);
+      }
+    );
+
+    // Cleanup function
+    return () => {
+      if (currentTexture) {
+        currentTexture.dispose();
+      }
+    };
+  }, [image, onLoad]);
+
+  // Update material when texture changes
+  useEffect(() => {
+    if (materialRef.current && texture) {
+      materialRef.current.map = texture;
+      materialRef.current.needsUpdate = true;
     }
-  }, [texture, onLoad]);
+  }, [texture]);
 
   useFrame((state, delta) => {
     if (autoRotate && meshRef.current) {
@@ -39,7 +80,7 @@ const PanoramaSphere = ({ image, onLoad, autoRotate, autoRotateSpeed }) => {
     // Rotate sphere by -90deg on Y so texture center (Pannellum yaw 0, assumed to be on local -X after scale) faces -Z (camera front).
     <mesh ref={meshRef} scale={[-1, 1, 1]} rotation={[0, -Math.PI / 2, 0]}> 
       <sphereGeometry args={[500, 60, 40]} />
-      {texture && <meshBasicMaterial map={texture} side={THREE.BackSide} />}
+      <meshBasicMaterial ref={materialRef} map={texture} side={THREE.BackSide} />
     </mesh>
   );
 };
@@ -86,13 +127,13 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
 
   const customHotspotStyle = {
     ...baseStyle,
-    background: 'transparent', // Transparent background for image icon
+    backgroundColor: 'transparent', // Transparent background for image icon
     border: 'none', // No border for image icon
   };
 
   const infoHotspotStyle = {
     ...baseStyle,
-    background: 'rgba(0, 0, 0, 0.6)', // Blackish background for info
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Blackish background for info
     color: 'white',
     fontSize: '18px',
     fontWeight: 'bold',
@@ -103,7 +144,7 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
 
   const startHotspotStyle = {
     ...baseStyle,
-    background: 'transparent', // No background
+    backgroundColor: 'transparent', // No background
     color: '#ffffff', // Gold/yellow color like road paint
     fontSize: '60px',
     fontWeight: '900',
@@ -118,7 +159,7 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
 
   const arrowHotspotStyle = {
     ...baseStyle,
-    background: 'transparent', // No background
+    backgroundColor: 'transparent', // No background
     color: '#ffffff', // White color like the START text
     fontSize: '48px',
     fontWeight: '900',
@@ -144,7 +185,6 @@ const Hotspot = ({ spot, onHotspotClickCallback }) => {
     whiteSpace: 'normal',
     width: 'max-content',
     maxWidth: '230px',
-    zIndex: 10000,
     textAlign: 'center',
     boxShadow: '0px 2px 6px rgba(0,0,0,0.25)',
     opacity: isHovered ? 1 : 0,
@@ -225,7 +265,7 @@ const R3FPanorama = ({
       controlsRef.current.object.position.setFromSphericalCoords(1, phi, theta);
       controlsRef.current.update();
     }
-  }, [initialPitch, initialYaw, controlsRef]);
+  }, [initialPitch, initialYaw, image, controlsRef]);
 
   const cameraFov = useMemo(() => {
     const aspect = typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 16/9;
@@ -235,7 +275,25 @@ const R3FPanorama = ({
   }, [hfov]);
 
   return (
-    <Canvas style={{ background: '#000' }}>
+    <Canvas 
+      style={{ background: '#000', position: 'relative', zIndex: 1 }}
+      onCreated={({ gl }) => {
+        // Handle WebGL context loss
+        gl.domElement.addEventListener('webglcontextlost', (event) => {
+          event.preventDefault();
+        }, false);
+        
+        gl.domElement.addEventListener('webglcontextrestored', () => {
+          // Context restored, renderer will automatically reinitialize
+        }, false);
+      }}
+      gl={{ 
+        preserveDrawingBuffer: true,
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance"
+      }}
+    >
       <PerspectiveCamera makeDefault fov={cameraFov} position={[0, 0, 0.1]} />
       <OrbitControls
         ref={controlsRef}

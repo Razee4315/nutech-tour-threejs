@@ -1135,16 +1135,13 @@ const TourView = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Current Location:', currentLocation);
-    console.log('Visit History:', visitHistory);
+    // Location tracking for visit history management
   }, [currentLocation, visitHistory]);
 
   const currentData = locations[currentLocation];
 
   const handleHotspotClick = (hotspot) => {
     if (hotspot.type === 'custom' && hotspot.handleClick) {
-      const previousLocation = currentLocation;
-      console.log('Before Click - Custom Hotspot - Current:', previousLocation, 'History:', visitHistory);
       hotspot.handleClick(setCurrentLocation);
     }
   };
@@ -1155,7 +1152,6 @@ const TourView = () => {
     }
     
     if (visitHistory[visitHistory.length - 1] !== currentLocation) {
-      console.log('Location changed, updating history:', [...visitHistory, currentLocation]);
       setVisitHistory(prevHistory => [...prevHistory, currentLocation]);
     }
   }, [currentLocation, visitHistory]);
@@ -1174,7 +1170,6 @@ const TourView = () => {
       const newHistory = [...visitHistory];
       newHistory.pop();
       const previousLocation = newHistory[newHistory.length - 1];
-      console.log('Going to Previous Location:', previousLocation, 'New History:', newHistory);
       
       setCurrentLocation(previousLocation);
       setVisitHistory(newHistory);
@@ -1236,7 +1231,7 @@ const TourView = () => {
       <HomeButton onClick={() => {
         setCurrentLocation(13);
         setVisitHistory([13]);
-      }}>Home</HomeButton>
+      }}>Main Entrance</HomeButton>
 
       <AllViewsContainer
         onMouseEnter={handleAllViewsEnter}
@@ -1273,7 +1268,6 @@ const TourView = () => {
 
       {currentData && currentData.image && (
         <R3FPanorama
-          key={currentLocation}
           image={currentData.image}
           initialPitch={currentData.initialPitch || 0}
           initialYaw={currentData.initialYaw || 0}
@@ -1298,11 +1292,13 @@ const TourView = () => {
           </FixedHotspot>
         ))}
 
-      <NavButtonContainer>
-        <NavigationButton onClick={goToPreviousLocation} disabled={visitHistory.length <= 1}>
-          Previous Location
-        </NavigationButton>
-      </NavButtonContainer>
+      {visitHistory.length > 1 && (
+        <NavButtonContainer>
+          <NavigationButton onClick={goToPreviousLocation}>
+            Previous Location
+          </NavigationButton>
+        </NavButtonContainer>
+      )}
 
       <InfoModal
         $show={modalInfo.$show}
