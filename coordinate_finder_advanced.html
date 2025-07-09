@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Campus Coordinate Finder</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .image-section {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .upload-area {
+      border: 3px dashed #ddd;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.05);
+    }
+
+    .upload-area.dragover {
+      border-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .upload-text {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn {
+      background: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .image-container {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .uploaded-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .marker-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .marker {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff4444;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: markerPulse 1s ease-out;
+    }
+
+    @keyframes markerPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.3);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .marker-number {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .sidebar {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 20px;
+      height: fit-content;
+    }
+
+    .sidebar h3 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .controls {
+      margin-bottom: 30px;
+    }
+
+    .control-group {
+      margin-bottom: 15px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .coordinate-list {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .coordinate-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .coordinate-item:hover {
+      background: #f8f9fa;
+    }
+
+    .coordinate-item:last-child {
+      border-bottom: none;
+    }
+
+    .coordinate-info {
+      flex: 1;
+    }
+
+    .coordinate-number {
+      background: #4CAF50;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .coordinate-values {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-btn:hover {
+      background: #c82333;
+    }
+
+    .stats {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .export-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+
+    .code-output {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🗺️ Advanced Campus Coordinate Finder</h1>
+      <p>Upload campus images and click to find precise coordinates for your virtual tour</p>
+    </div>
+
+    <div class="main-content">
+      <div class="image-section">
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text">Click to upload image or drag & drop</div>
+          <button class="btn">Choose Image</button>
+          <input type="file" class="file-input" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="image-container hidden" id="imageContainer">
+          <img id="uploadedImage" class="uploaded-image" alt="Campus Image">
+          <div class="marker-overlay" id="markerOverlay"></div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="stats">
+          <div class="stats-number" id="pointCount">0</div>
+          <div>Points Marked</div>
+        </div>
+
+        <div class="controls">
+          <h3>🎛️ Controls</h3>
+          <div class="control-group">
+            <button class="btn btn-secondary" id="undoBtn" disabled>↶ Undo Last</button>
+            <button class="btn btn-danger" id="clearBtn" disabled>🗑️ Clear All</button>
+          </div>
+        </div>
+
+        <h3>📍 Coordinates History</h3>
+        <div class="coordinate-list" id="coordinateList">
+          <div style="padding: 20px; text-align: center; color: #999;">
+            No coordinates marked yet.<br>
+            Upload an image and start clicking!
+          </div>
+        </div>
+
+        <div class="export-section">
+          <h3>📤 Export</h3>
+          <button class="btn" id="exportJson">Export as JSON</button>
+          <button class="btn btn-secondary" id="exportCode">Export as Code</button>
+          <div class="code-output hidden" id="codeOutput"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class CoordinateFinder {
+      constructor() {
+        this.coordinates = [];
+        this.imageElement = null;
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imageContainer = document.getElementById('imageContainer');
+        const undoBtn = document.getElementById('undoBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const exportJson = document.getElementById('exportJson');
+        const exportCode = document.getElementById('exportCode');
+
+        // Upload area click
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // File input change
+        fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+          uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          uploadArea.classList.remove('dragover');
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            this.loadImage(files[0]);
+          }
+        });
+
+        // Image click for coordinates
+        imageContainer.addEventListener('click', (e) => this.handleImageClick(e));
+
+        // Control buttons
+        undoBtn.addEventListener('click', () => this.undoLast());
+        clearBtn.addEventListener('click', () => this.clearAll());
+        exportJson.addEventListener('click', () => this.exportAsJson());
+        exportCode.addEventListener('click', () => this.exportAsCode());
+      }
+
+      handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+          this.loadImage(file);
+        }
+      }
+
+      loadImage(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.getElementById('uploadedImage');
+          img.src = e.target.result;
+          img.onload = () => {
+            document.getElementById('uploadArea').classList.add('hidden');
+            document.getElementById('imageContainer').classList.remove('hidden');
+            this.imageElement = img;
+            this.clearAll(); // Clear previous coordinates
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+
+      handleImageClick(event) {
+        if (event.target !== this.imageElement) return;
+
+        const rect = this.imageElement.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Calculate percentages
+        const percentX = (x / this.imageElement.clientWidth) * 100;
+        const percentY = (y / this.imageElement.clientHeight) * 100;
+
+        // Calculate natural coordinates
+        const scaleX = this.imageElement.naturalWidth / this.imageElement.clientWidth;
+        const scaleY = this.imageElement.naturalHeight / this.imageElement.clientHeight;
+        const naturalX = x * scaleX;
+        const naturalY = y * scaleY;
+
+        const coordinate = {
+          id: this.coordinates.length + 1,
+          displayX: x,
+          displayY: y,
+          percentX: Math.round(percentX * 100) / 100,
+          percentY: Math.round(percentY * 100) / 100,
+          naturalX: Math.round(naturalX),
+          naturalY: Math.round(naturalY),
+          timestamp: new Date().toLocaleTimeString()
+        };
+
+        this.coordinates.push(coordinate);
+        this.addMarker(coordinate);
+        this.updateCoordinateList();
+        this.updateStats();
+        this.updateButtons();
+      }
+
+      addMarker(coordinate) {
+        const overlay = document.getElementById('markerOverlay');
+        const marker = document.createElement('div');
+        marker.className = 'marker';
+        marker.style.left = coordinate.displayX + 'px';
+        marker.style.top = coordinate.displayY + 'px';
+        marker.setAttribute('data-id', coordinate.id);
+
+        const number = document.createElement('div');
+        number.className = 'marker-number';
+        number.textContent = coordinate.id;
+        marker.appendChild(number);
+
+        overlay.appendChild(marker);
+      }
+
+      updateCoordinateList() {
+        const list = document.getElementById('coordinateList');
+        
+        if (this.coordinates.length === 0) {
+          list.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: #999;">
+              No coordinates marked yet.<br>
+              Upload an image and start clicking!
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = this.coordinates.map(coord => `
+          <div class="coordinate-item">
+            <div class="coordinate-number">${coord.id}</div>
+            <div class="coordinate-info">
+              <div><strong>Point ${coord.id}</strong> (${coord.timestamp})</div>
+              <div class="coordinate-values">
+                📍 ${coord.percentX}%, ${coord.percentY}%<br>
+                🖼️ ${coord.naturalX}, ${coord.naturalY}
+              </div>
+            </div>
+            <button class="delete-btn" onclick="finder.deleteCoordinate(${coord.id})">×</button>
+          </div>
+        `).join('');
+      }
+
+      deleteCoordinate(id) {
+        this.coordinates = this.coordinates.filter(coord => coord.id !== id);
+        // Renumber remaining coordinates
+        this.coordinates.forEach((coord, index) => {
+          coord.id = index + 1;
+        });
+        
+        this.refreshMarkers();
+        this.updateCoordinateList();
+        this.updateStats();
+        this.updateButtons();
+      }
+
+      refreshMarkers() {
+        const overlay = document.getElementById('markerOverlay');
+        overlay.innerHTML = '';
+        this.coordinates.forEach(coord => this.addMarker(coord));
+      }
+
+      undoLast() {
+        if (this.coordinates.length > 0) {
+          this.coordinates.pop();
+          this.refreshMarkers();
+          this.updateCoordinateList();
+          this.updateStats();
+          this.updateButtons();
+        }
+      }
+
+      clearAll() {
+        this.coordinates = [];
+        document.getElementById('markerOverlay').innerHTML = '';
+        this.updateCoordinateList();
+        this.updateStats();
+        this.updateButtons();
+      }
+
+      updateStats() {
+        document.getElementById('pointCount').textContent = this.coordinates.length;
+      }
+
+      updateButtons() {
+        const hasCoords = this.coordinates.length > 0;
+        document.getElementById('undoBtn').disabled = !hasCoords;
+        document.getElementById('clearBtn').disabled = !hasCoords;
+      }
+
+      exportAsJson() {
+        const data = {
+          metadata: {
+            totalPoints: this.coordinates.length,
+            exportTime: new Date().toISOString(),
+            imageSize: this.imageElement ? {
+              natural: {
+                width: this.imageElement.naturalWidth,
+                height: this.imageElement.naturalHeight
+              },
+              display: {
+                width: this.imageElement.clientWidth,
+                height: this.imageElement.clientHeight
+              }
+            } : null
+          },
+          coordinates: this.coordinates
+        };
+
+        this.downloadFile(JSON.stringify(data, null, 2), 'coordinates.json', 'application/json');
+      }
+
+      exportAsCode() {
+        const output = document.getElementById('codeOutput');
+        const codeString = `const locationPositions = {
+${this.coordinates.map((coord, index) => 
+  `  ${index}: { top: ${coord.percentY}, left: ${coord.percentX} }, // Point ${coord.id}`
+).join('\n')}
+};
+
+// Usage in React component:
+// const position = locationPositions[index] || { top: 50, left: 50 };
+// style={{ top: \`\${position.top}%\`, left: \`\${position.left}%\` }}`;
+
+        output.textContent = codeString;
+        output.classList.remove('hidden');
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(codeString).then(() => {
+          alert('Code copied to clipboard!');
+        });
+      }
+
+      downloadFile(content, filename, contentType) {
+        const blob = new Blob([content], { type: contentType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    // Initialize the application
+    const finder = new CoordinateFinder();
+  </script>
+</body>
+</html> 

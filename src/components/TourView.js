@@ -479,21 +479,15 @@ const InfoModal = ({ $show, onClose, title, message }) => (
 const SatelliteMapComponent = ({ currentLocation, locations, onLocationChange }) => {
   // Define accurate positions for each location based on the satellite image
   // These positions are percentages (0-100) from top-left corner
+  // Updated with precise coordinates from coordinate finder tool
   const locationPositions = {
-    0: { top: 45, left: 25 },   // Academic Block (main building complex)
-    1: { top: 60, left: 35 },   // Campus Pathway (pathway between buildings)
-    2: { top: 75, left: 45 },   // Main Walkway (central walkway)
-    3: { top: 35, left: 20 },   // Admin Block (upper left building)
-    4: { top: 30, left: 45 },   // Campus Viewpoint (upper central area)
-    5: { top: 65, left: 25 },   // Admin Pathway (pathway to admin)
-    6: { top: 50, left: 30 },   // Atrium (central building area)
-    7: { top: 40, left: 35 },   // Computer Lab (inside academic building)
-    8: { top: 45, left: 32 },   // Library First Floor (library building)
-    9: { top: 42, left: 32 },   // Library Second Floor (library building upper)
-    10: { top: 55, left: 65 },  // Faculty and Girls Cafe (right side building)
-    11: { top: 50, left: 70 },  // Auditorium External View (rightmost building)
-    12: { top: 48, left: 28 },  // Classroom (academic building area)
-    13: { top: 85, left: 50 }   // Main Entrance (bottom entrance from main road)
+    0: { top: 79.22, left: 49.18 }, // Point 1  Main entrance
+    1: { top: 63.85, left: 46.99 }, // Point 2  Main Walkway
+    2: { top: 63.13, left: 34.02 }, // Point 3  Campus pathway 
+    3: { top: 48.33, left: 24.18 }, // Point 4  Academic block
+    4: { top: 13.85, left: 51.09 }, // Point 5  Admin Pathway
+    5: { top: 13.13, left: 42.08 }, // Point 6  Admin Block
+    6: { top: 23.91, left: 24.04 }, // Point 7  Campus View Point
   };
 
   return (
