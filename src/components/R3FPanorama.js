@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -22,11 +22,9 @@ const PanoramaSphere = ({ image, onLoad, autoRotate, autoRotateSpeed }) => {
   const meshRef = useRef();
   const materialRef = useRef();
   const [texture, setTexture] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   // Load texture when image changes
   useEffect(() => {
-    setIsLoading(true);
     const loader = new THREE.TextureLoader();
     let currentTexture = null;
     
@@ -41,15 +39,13 @@ const PanoramaSphere = ({ image, onLoad, autoRotate, autoRotateSpeed }) => {
           }
           return loadedTexture;
         });
-        setIsLoading(false);
         if (onLoad) {
           onLoad();
         }
       },
       undefined,
       (error) => {
-        console.error('Failed to load texture:', error);
-        setIsLoading(false);
+        // Texture loading failed - handle silently
       }
     );
 
